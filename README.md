@@ -1,4 +1,7 @@
 # RasPreenFM2
+
+https://github.com/styro2000/RasPreenFM2/blob/master/RasPreenFM2_test.jpg
+
 BareMetal RasperryPi Port of the PreenFM2 Synthesizer https://github.com/Ixox/preenfm2
 
 The PreenFM2-Synth looked really good but i was not happy with the STM32-uController...
