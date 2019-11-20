@@ -125,8 +125,9 @@ public:
     	oscValuesCpt++;
     	oscValuesCpt &= 0x3;
 
-   		for (int k=0; k<32; ) {
-            fIndex +=  freq;
+//   		for (int k=0; k<32; ) {             //styro
+    	for (int k=0; k<BLOCK_SIZE; ) {
+           fIndex +=  freq;
             iIndex = fIndex;
             fIndex -= iIndex;
             iIndex &=  max;
@@ -170,7 +171,8 @@ public:
    		float* oscValuesToFill = oscValues[oscValuesCpt];
     	oscValuesCpt++;
     	oscValuesCpt &= 0x3;
-   		for (int k=0; k<32; ) {
+//   		for (int k=0; k<32; ) {
+   		for (int k=0; k<BLOCK_SIZE; ) {             // styro
             fIndex +=  freq;
             iIndex = fIndex;
             fIndex -= iIndex;

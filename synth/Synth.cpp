@@ -125,6 +125,8 @@ void Synth::buildNewSampleBlock() {
     // We consider the random number is always ready here...
     uint32_t random32bit = m_Random.GetNumber();
 
+    BlockDivider++;
+
     noise[0] =  (random32bit & 0xffff) * .000030518f - 1.0f; // value between -1 and 1.
     noise[1] = (random32bit >> 16) * .000030518f - 1.0f; // value between -1 and 1.
     for (int noiseIndex = 2; noiseIndex<32; ) {
@@ -142,10 +144,11 @@ void Synth::buildNewSampleBlock() {
                 this->voices[timbres[t].voiceNumber[0]].glide();
             }
         }
-//        if (((usb_filesomething_hack-1) != t)&&((usb_filesomething_hack-1) != 4)){
-        if (usb_filesomething_hack == 0){
+        if (usb_filesomething_hack == 0){   // hack prevent crashing at prepareMatrixForNewBlock() while usb
             out_led2.Set(0);
-            timbres[t].prepareMatrixForNewBlock();
+            if(BlockDivider & 0x01){    // bloody hack to compensate the twice as often buildNewSampleBlock @ BLOCK_SIZE 16 for Envs/BPMs/etc   
+                timbres[t].prepareMatrixForNewBlock();
+            }
         }else{
             if (usb_filesomething_hack != 5){
                 // if ((usb_filesomething_hack-1) != t){
@@ -191,14 +194,16 @@ void Synth::buildNewSampleBlock() {
     int *cb = &samples[writeCursor];
 
     float toAdd = 131071.0f;
-    for (int s = 0; s < 64/4; s++) {
+//    for (int s = 0; s < 64/4; s++) {
+    for (int s = 0; s < (BLOCK_SIZE*2)/4; s++) {
         *cb++ = (int)((*sampleFromTimbre1++ + *sampleFromTimbre2++ + *sampleFromTimbre3++ + *sampleFromTimbre4++) + toAdd);
         *cb++ = (int)((*sampleFromTimbre1++ + *sampleFromTimbre2++ + *sampleFromTimbre3++ + *sampleFromTimbre4++) + toAdd);
         *cb++ = (int)((*sampleFromTimbre1++ + *sampleFromTimbre2++ + *sampleFromTimbre3++ + *sampleFromTimbre4++) + toAdd);
         *cb++ = (int)((*sampleFromTimbre1++ + *sampleFromTimbre2++ + *sampleFromTimbre3++ + *sampleFromTimbre4++) + toAdd);
     }
 
-    writeCursor = (writeCursor + 64) & 255;
+//    writeCursor = (writeCursor + 64) & 255;             // styro
+    writeCursor = (writeCursor + BLOCK_SIZE*2) & 255;             // styro
 
 //    out_led3.Set(0);
 

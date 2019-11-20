@@ -27,7 +27,8 @@
 #define unlikely(x)     __builtin_expect((x),0)
 #define ARRAY_SIZE(x)  ( sizeof(x) / sizeof((x)[0]) )
 
-#define BLOCK_SIZE 32
+//#define BLOCK_SIZE 32
+#define BLOCK_SIZE 16                   // styro
 
 #define NUMBER_OF_ENCODERS 4
 #define NUMBER_OF_BUTTONS 8
@@ -44,8 +45,8 @@
 #ifndef OVERCLOCK
 // 168000000 / 1105 / 4
 // #define PREENFM_FREQUENCY 38009.04f
-// #define PREENFM_FREQUENCY 48000.0f
-#define PREENFM_FREQUENCY 96000.0f
+#define PREENFM_FREQUENCY 48000.0f
+// #define PREENFM_FREQUENCY 96000.0f
 //#define PREENFM_FREQUENCY 192000.0f
 #else
 // 192000000 / 1116 / 4  :

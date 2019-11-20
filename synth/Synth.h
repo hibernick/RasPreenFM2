@@ -185,9 +185,7 @@ private:
     volatile int writeCursor;
     int samples[256];
 
-
-
-
+    u8 BlockDivider=0;
 
     // gate
     float currentGate;

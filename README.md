@@ -8,7 +8,7 @@ The PreenFM2-Synth looked really good but i was not happy with the STM32-uContro
 I really like the STM32 uControllers and did some Projects with them but i was constantly annoyed with the buggy and rather strange Software-Support of STM (CubeMX-Code-Generator produces buggy code, poor support etc, its a pitty because i really liked the STM32F-Disco Kits).
 Then i stumbled over the Circle-Framework for BareMetal Programming of the Raspberry Pi https://github.com/rsta2/minisynth
 and ported PreenFM2 with it to Raspi 3B, HiFiBerry DAC+ Audiocard and a MAX6957 for the connection to the encoders and buttons.
-(see hardware/Encoders.cpp for details) and got a latency of about 3ms @ 96kHz
+(see hardware/Encoders.cpp for details) and got a latency of about < 3ms @ 48kHz
 
 The Port is a really ugly hack, was does not work:
 - Bootmode
@@ -16,7 +16,7 @@ The Port is a really ugly hack, was does not work:
 - Oled-Timer
 - probably more :-(
 
-My c++ coding skills are not very good, there are probably much better ways to do things...
+About the code, there are probably much better ways to do things...
 
 Its compiled as 64Bit, just put the kernel8.img, bootcode.bin, start.elf & fixup.dat in the root of the sd-card
 of your Raspi 3B(+) and off you go!
@@ -52,6 +52,8 @@ Hope that anybody has fun using the synth and many thanks for bug reports!
 
 Many thanks goes out to Xavier Hosxe for the great PreenFM2 and R. Stange for the amazing Circle Framework!
 
+ * THIS IS ALPHA-SOFTWARE! DONT USE IT FOR LIVE PURPOSES! 
+ * I AM NOT RESPONSIBLE FOR ANY TRAGEDIES AT GIGS :-)
 
 
 

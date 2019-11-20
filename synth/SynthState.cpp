@@ -26,7 +26,7 @@ extern LiquidCrystal      lcd;
 extern Synth synth;
 extern u8 usb_filesomething_hack;
 
-// #define NULL 0 
+#define NULL 0
 // FLASH :  __attribute__ ((section (".USER_FLASH")))
 // Ex : const char* nullNames [] __attribute__ ((section (".USER_FLASH")))= {};
 // DISPLAY structures
@@ -166,7 +166,7 @@ struct ParameterRowDisplay engineMix3ParameterRow = {
 };
 
 
-const char* fxName []=  { "Off ", "Mix ", "LP  ", "HP  ", "Bass", "BP  ", "Crsh" } ;
+const char* fxName []=  { "Off ", "Mix ", "LP  ", "HP  ", "Bass", "BP  ", "Crsh" , "LP2 ", "HP2 ", "BP2 ", "Lp3 ", "Hp3 ", "Bp3 ", "Peak", "Notc", "Bell", "LowS", "HigS", "LpHp", "BpDs", "LPws", "Tilt", "Pann", "Sat ", "Sigm", "Fold", "Wrap", "Xor ", "Txr1", "Txr2", "LPx1", "LPx2", "LpSn", "HpSn", "Not4", "Ap4 ", "Ap4b", "Ap4D", "Oryx", "La+d", "Lad+"} ;
 
 struct ParameterRowDisplay effectParameterRow = {
         "Filter" ,
@@ -187,6 +187,40 @@ struct FilterRowDisplay filterRowDisplay[FILTER_LAST] = {
         { "LoFr", "Boos", "Gain" },
         { "Freq", "Q   ", "Gain" },
         { "Samp", "Bits", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Q   ", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Amp ", "Gain" },
+        { "Freq", "Amp ", "Gain" },
+        { "Freq", "Amp ", "Gain" },
+        { "Freq", "Res ", "Gain" },        
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Mix ", "Gain" },
+        { "Freq", "Mod ", "Gain" },
+        { "Pos ", "Sprd", "Gain" },
+        { "Thrs", "Tone ", "Gain" },
+        { "Driv", "Tone ", "Gain" },
+        { "Driv", "Tone ", "Gain" },
+        { "Driv", "Tone", "Gain" },
+        { "Thrs", "Tone ", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Fold", "Gain" },
+        { "Freq", "Fold", "Gain" },
+        { "Pos ", "Freq", "Gain" },
+        { "Pos ", "Freq", "Gain" },
+        { "Freq", "Sprd", "Gain" },
+        { "Freq", "Sprd", "Gain" },
+        { "Freq", "Sprd", "Gain" },
+        { "Freq", "Sprd", "Gain" },
+        { "Vowl", "Tone", "Gain" },
+        { "Freq", "Res ", "Gain" },
+        { "Freq", "Res ", "Gain" }
 };
 
 
@@ -426,9 +460,9 @@ struct AllParameterRowsDisplay allParameterRows = {
                 &midiNote2ParameterRow
         }
 };
- 
 
-  
+
+
 
 SynthState::SynthState() {
     engineRow =  ROW_ENGINE;
@@ -473,12 +507,11 @@ SynthState::SynthState() {
     fullState.midiConfigValue[MIDICONFIG_TEST_VELOCITY] = 120;
     fullState.midiConfigValue[MIDICONFIG_ENCODER] = 0;
     fullState.midiConfigValue[MIDICONFIG_OP_OPTION] = 0;
-    fullState.midiConfigValue[MIDICONFIG_LED_CLOCK] = 1;
+    fullState.midiConfigValue[MIDICONFIG_LED_CLOCK] = 0;
     fullState.midiConfigValue[MIDICONFIG_ARPEGGIATOR_IN_PRESET] = 0;
     fullState.midiConfigValue[MIDICONFIG_OLED_SAVER] = 0;
     fullState.midiConfigValue[MIDICONFIG_UNLINKED_EDITING] = 0;
-//    fullState.midiConfigValue[MIDICONFIG_BOOT_SOUND] = 0;
-    fullState.midiConfigValue[MIDICONFIG_BOOT_SOUND] = 1;
+    fullState.midiConfigValue[MIDICONFIG_BOOT_SOUND] = 0;
     fullState.firstMenu = 0;
     // Init randomizer values to 1
     fullState.randomizer.Oper = 1;
@@ -489,7 +522,6 @@ SynthState::SynthState() {
     for (int k=0; k<12; k++) {
         fullState.name[k] = 0;
     }
-
 
     // edit with timbre 0
     currentTimbre = 0;
@@ -1146,7 +1178,7 @@ void SynthState::setScalaEnable(bool enable) {
 
 void SynthState::setScalaScale(int scaleNumber) {
     fullState.scalaScaleConfig.scalaFile = storage->getScalaFile()->getFile(scaleNumber);
-    
+
     if (fullState.scalaScaleConfig.scalaFile->fileType != FILE_EMPTY && fullState.scalaScaleConfig.scalaEnabled) {
         storage->getScalaFile()->loadScalaScale(&fullState.scalaScaleConfig);
     }
@@ -1154,15 +1186,12 @@ void SynthState::setScalaScale(int scaleNumber) {
 
 void SynthState::loadPreenFMPatch(int timbre, PFM2File const *bank, int patchNumber, struct OneSynthParams* params) {
     usb_filesomething_hack = 5;
+//   usb_filesomething_hack = timbre+1;
     storeTestNote();
     propagateNoteOff();
     propagateBeforeNewParamsLoad(timbre);
-//   usb_filesomething_hack = timbre+1;
-
-
     storage->getPatchBank()->loadPreenFMPatch(bank, patchNumber, params);
     propagateAfterNewParamsLoad(timbre);
-//    usb_filesomething_hack = 0;
     restoreTestNote();
     usb_filesomething_hack = 0;
 }
@@ -1183,11 +1212,9 @@ void SynthState::loadDx7Patch(int timbre, PFM2File const *bank, int patchNumber,
 void SynthState::loadPreenFMCombo(PFM2File const *bank, int patchNumber) {
     usb_filesomething_hack = 5;
     propagateBeforeNewParamsLoad(currentTimbre);
-
     storage->getComboBank()->loadPreenFMCombo(bank, patchNumber);
     // Update and clean all timbres
     this->currentTimbre = 0;
-
     propagateNewTimbre(currentTimbre);
     propagateAfterNewComboLoad();
     usb_filesomething_hack = 0;
@@ -1195,8 +1222,6 @@ void SynthState::loadPreenFMCombo(PFM2File const *bank, int patchNumber) {
 
 
 void SynthState::loadPreenFMPatchFromMidi(int timbre, int bank, int bankLSB, int patchNumber, struct OneSynthParams* params) {
-    // usb_filesomething_hack = 1;
-
     switch (bank) {
     case 0:
     {
@@ -1226,8 +1251,6 @@ void SynthState::loadPreenFMPatchFromMidi(int timbre, int bank, int bankLSB, int
     }
     break;
     }
-    // usb_filesomething_hack = 0;
-
 }
 
 
@@ -1700,15 +1723,12 @@ const MenuItem* SynthState::afterButtonPressed() {
         if (!storage->getPatchBank()->nameExists(fullState.name)) {
             cmi = fullState.currentMenuItem;
             // Update display while formating
-           lcd.setRealTimeAction(true);
+            lcd.setRealTimeAction(true);
             fullState.currentMenuItem = MenuItemUtil::getMenuItem(MENU_IN_PROGRESS);
             propagateNewMenuState();
             storage->getPatchBank()->create(fullState.name);
-//           	out_led3.Set(1);
-            fullState.currentMenuItem = MenuItemUtil::getMenuItem(MENU_DONE);
-//           lcd.setRealTimeAction(false);  //styro
-
-//            fullState.currentMenuItem = cmi;
+//            lcd.setRealTimeAction(false);				//styro
+//            fullState.currentMenuItem = cmi;				//styro
         } else {
             rMenuItem = MenuItemUtil::getMenuItem(MENU_ERROR);
         }
@@ -1729,14 +1749,14 @@ const MenuItem* SynthState::afterButtonPressed() {
         if (!storage->getComboBank()->nameExists(fullState.name)) {
             cmi = fullState.currentMenuItem;
             // Update display while formating
-           lcd.setRealTimeAction(true);
+            lcd.setRealTimeAction(true);
             fullState.currentMenuItem = MenuItemUtil::getMenuItem(MENU_IN_PROGRESS);
             propagateNewMenuState();
             storage->getComboBank()->createComboBank(fullState.name);
 //            lcd.setRealTimeAction(false);  //styro
-            fullState.currentMenuItem = MenuItemUtil::getMenuItem(MENU_DONE);
+            fullState.currentMenuItem = MenuItemUtil::getMenuItem(MENU_DONE);																			 
 //            fullState.currentMenuItem = cmi;
-       } else {
+        } else {
             rMenuItem = MenuItemUtil::getMenuItem(MENU_ERROR);
         }
         break;
@@ -2082,12 +2102,12 @@ void SynthState::setLastRowForTimbre( int timbre, int row )
    CBcmRandomNumberGenerator g_Random;
 
 int getRandomInt(int max) {
-
+	  
    return g_Random.GetNumber() % max;
 }
 
 float getRandomFloat(float min, float max) {
-//   CBcmRandomNumberGenerator m_Random;
+	  
     float f = ((float)(g_Random.GetNumber() % 100000)) / 100000.0f;
     return f * (max - min) + min;
 }

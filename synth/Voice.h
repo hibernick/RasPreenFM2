@@ -305,8 +305,8 @@ public:
             this->lfoStepSeq[1].nextValueInMatrix();
         }
 
-       this->matrix.computeAllDestintations();
-       updateAllModulationIndexes();
+        this->matrix.computeAllDestintations();
+        updateAllModulationIndexes();
     }
 
 

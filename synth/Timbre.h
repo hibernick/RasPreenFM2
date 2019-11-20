@@ -59,7 +59,7 @@ public:
     void afterNewParamsLoad();
     void setNewValue(int index, struct ParameterDisplay* param, float newValue);
     void setNewEffecParam(int encoder);
-    void recomputeBPValues();
+    void recomputeBPValues(float q, float param1Square);
     int getSeqStepValue(int whichStepSeq, int step);
     void setSeqStepValue(int whichStepSeq, int step, int value);
     // Arpegiator
@@ -149,7 +149,7 @@ private:
 
 	int8_t timbreNumber;
     struct OneSynthParams params;
-    float sampleBlock[BLOCK_SIZE * 2];
+    float sampleBlock[BLOCK_SIZE * 2]; 
     float *sbMax;
     float numberOfVoiceInverse;
     float mixerGain;
@@ -214,17 +214,14 @@ private:
     uint8_t recording_;
     // Low pass filter
     float fxParam1, fxParam2, fxParam3;
-    float fxParamA1, fxParamA2;
-    float fxParamB1, fxParamB2;
-    float v0L, v1L;
-    float v0R, v1R;
+    float v0L, v1L, v2L, v3L, v4L, v5L, v6L, v7L;
+    float v0R, v1R, v2R, v3R, v4R, v5R, v6R, v7R;
+   	float fxParamA1, fxParamA2, fxParamB1, fxParamB2;
     float fxPhase;
     // save float fxParam1 to detect modification
     float fxParam1PlusMatrix;
-
     // lfoUsed
     uint8_t lfoUSed[NUMBER_OF_LFO];
-
 };
 
 #endif /* TIMBRE_H_ */

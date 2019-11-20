@@ -27,8 +27,6 @@
 #include "Storage.h"
 #include <circle/bcmrandom.h>
 
-
-
 #define BUTTON_SYNTH  0
 #define BUTTON_OSC    1
 #define BUTTON_ENV    2
@@ -268,8 +266,41 @@ enum FILTER_TYPE {
     FILTER_BASS,
     FILTER_BP,
     FILTER_CRUSHER,
-    FILTER_LAST,
-    FILTER_LP4
+    FILTER_LP2,
+    FILTER_HP2,
+    FILTER_BP2,
+    FILTER_LP3,
+    FILTER_HP3,
+    FILTER_BP3,
+    FILTER_PEAK,
+    FILTER_NOTCH,
+    FILTER_BELL,
+    FILTER_LOWSHELF,
+    FILTER_HIGHSHELF,
+    FILTER_LPHP,
+    FILTER_BPds,
+    FILTER_LPWS,
+    FILTER_TILT,
+    FILTER_STEREO,
+    FILTER_SAT,
+    FILTER_SIGMOID,
+    FILTER_FOLD,
+    FILTER_WRAP,
+    FILTER_XOR,
+    FILTER_TEXTURE1,
+    FILTER_TEXTURE2,
+    FILTER_LPXOR,
+    FILTER_LPXOR2,
+    FILTER_LPSIN,
+    FILTER_HPSIN,
+    FILTER_QUADNOTCH,
+    FILTER_AP4,
+    FILTER_AP4B,
+    FILTER_AP4D,
+    FILTER_ORYX,
+    FILTER_LADDER,
+    FILTER_LADDER2,
+    FILTER_LAST
 };
 
 // Display information
@@ -550,7 +581,6 @@ private:
     int16_t oscillatorRow;
     int16_t engineRow;
     int16_t lfoRow;
-
     char operatorNumber, operatorView;
     char currentRow;
     int lastRowForTimbre[ NUMBER_OF_TIMBRES ];
@@ -584,7 +614,6 @@ private:
 
     Storage* storage;
     Hexter* hexter;
-
 
 };
 

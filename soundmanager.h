@@ -28,11 +28,12 @@ class CSoundManager;
 #ifdef USE_I2S
 	#include <circle/i2ssoundbasedevice.h>
 	#define SOUND_CLASS	CI2SSoundBaseDevice
-	#define SAMPLE_RATE	96000
-//	#define SAMPLE_RATE	48000
+//	#define SAMPLE_RATE	96000
+	#define SAMPLE_RATE	48000
 //	#define CHUNKSIZE	8192
 //	#define CHUNKSIZE	128
-	#define CHUNKSIZE	64
+//	#define CHUNKSIZE	64
+	#define CHUNKSIZE	32
 #else
 	#include <circle/pwmsoundbasedevice.h>
 	#define SOUND_CLASS	CPWMSoundBaseDevice
