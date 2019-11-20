@@ -3,7 +3,7 @@
 https://github.com/styro2000/RasPreenFM2/blob/master/RasPreenFM2_test.jpg
 
 BareMetal RasperryPi Port of the PreenFM2 Synthesizer https://github.com/Ixox/preenfm2
-included the extrafilters from https://github.com/pvig/preenfm2
+included extrafilters from https://github.com/pvig/preenfm2
 
 The PreenFM2-Synth looked really good but i was not happy with the STM32-uController...
 I really like the STM32 uControllers and did some Projects with them but i was constantly annoyed with the buggy and rather strange Software-Support of STM (CubeMX-Code-Generator produces buggy code, poor support etc, its a pitty because i really liked the STM32F-Disco Kits).
@@ -13,8 +13,9 @@ and ported PreenFM2 with it to Raspi 3B, HiFiBerry DAC+ Audiocard and a MAX6957 
 
 The Port is a really ugly hack, was does not work:
 - Bootmode
-- usb-midi doesnt work (now...), MIDI is done thru the serial-interface UART0
+- usb-midi doesnt work (now...), MIDI is done thru the serial-interface UART0 (GPIO 14/TX Pin8, GPIO 15/RX Pin10 )
 - Oled-Timer
+- Clock-Led
 - probably more :-(
 
 About the code, there are probably much better ways to do things...
