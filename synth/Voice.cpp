@@ -25,18 +25,30 @@ float Voice::glidePhaseInc[10];
 Voice::Voice(void)
 {
 
-	if (glidePhaseInc[0] != .2f) {
+	if (glidePhaseInc[0] != .2f) {				// Raspreen Longer Glidetimes
 		float tmp[] = {
+				// 5.0f,
+				// 9.0f,
+				// 15.0f,
+				// 22.0f,
+				// 35.0f,
+				// 50.0f,
+				// 90.0f,
+				// 140.0f,
+				// 200.0f,
+				// 500.0f
+
 				5.0f,
-				9.0f,
-				15.0f,
-				22.0f,
-				35.0f,
-				50.0f,
-				90.0f,
-				140.0f,
+				19.0f,
+				55.0f,
+				110.0f,
 				200.0f,
-				500.0f
+				350.0f,
+				600.0f,
+				850.0f,
+				1100.0f,
+				1500.0f
+
 		};
 		for (int k = 0 ; k <10 ; k++) {
 			glidePhaseInc[k] = 1.0f/tmp[k];

@@ -1213,6 +1213,11 @@ void SynthState::loadPreenFMCombo(PFM2File const *bank, int patchNumber) {
     usb_filesomething_hack = 5;
     propagateBeforeNewParamsLoad(currentTimbre);
     storage->getComboBank()->loadPreenFMCombo(bank, patchNumber);
+    const char *pC = storage->getComboBank()->loadPreenFMComboName(bank, patchNumber);
+    for (int k=0; k<12 && pC[k] != 0; k++) {
+        ComboName[k] = pC[k];
+    }
+    ComboName[12] = '\0';
     // Update and clean all timbres
     this->currentTimbre = 0;
     propagateNewTimbre(currentTimbre);
@@ -1639,10 +1644,11 @@ const MenuItem* SynthState::afterButtonPressed() {
     case MENU_SAVE_SELECT_COMBO_PRESET:
     {
         // const char* comboName = storage->readComboName(fullState.menuSelect);
-        const char* comboName = storage->getComboBank()->loadPreenFMComboName(fullState.preenFMCombo, fullState.preenFMComboPresetNumber);
-        for (int k=0; k<12 && comboName[k] != 0; k++) {
+// styro
+//        const char* comboName = storage->getComboBank()->loadPreenFMComboName(fullState.preenFMCombo, fullState.preenFMComboPresetNumber);
+        for (int k=0; k<12 && ComboName[k] != 0; k++) {
             for (int j=0; j<getLength(allChars); j++) {
-                if (comboName[k] == allChars[j]) {
+                if (ComboName[k] == allChars[j]) {
                     fullState.name[k] = j;
                 }
             }
@@ -1664,14 +1670,13 @@ const MenuItem* SynthState::afterButtonPressed() {
         params->presetName[length] = '\0';
         storage->getPatchBank()->savePreenFMPatch(fullState.preenFMBank, fullState.preenFMPresetNumber, params);
         break;
-    case MENU_SAVE_ENTER_COMBO_NAME:
+    case MENU_SAVE_ENTER_COMBO_NAME:                                        // styro
         for (length=12; fullState.name[length-1] == 0; length--);
-        char comboName[12];
         for (int k=0; k<length; k++) {
-            comboName[k] = allChars[(int)fullState.name[k]];
+            ComboName[k] = allChars[(int)fullState.name[k]];
         }
-        comboName[length] = '\0';
-        storage->getComboBank()->savePreenFMCombo(fullState.preenFMCombo, fullState.preenFMComboPresetNumber, comboName);
+        ComboName[length] = '\0';
+        storage->getComboBank()->savePreenFMCombo(fullState.preenFMCombo, fullState.preenFMComboPresetNumber, ComboName);
         break;
     case MENU_SAVE_SYSEX_PATCH:
         //PresetUtil::sendCurrentPatchToSysex();

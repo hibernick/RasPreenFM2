@@ -595,6 +595,8 @@ private:
     char storedPlayingNote;
     char storedPlayingTimbre;
 
+    char ComboName[20] = {"Combo"};
+
 
     // Done menu temporisation
     unsigned int doneClick;
