@@ -78,7 +78,6 @@
 #define SPI_CPOL		0
 #define SPI_CPHA		0
 #define SPI_CHIP_SELECT		0		// 0 or 1, or 2 (for SPI1)
-#define TEST_DATA_LENGTH	128		// number of data bytes transfered
 
 SynthState         synthState;
 Synth              synth;
@@ -92,7 +91,7 @@ Hexter             hexter;
 
 static const char FromKernel[] = "kernel";
 
-const char* ProgVersion = "RasPreenFM2 0.02h 32@48k " __DATE__ " " __TIME__;
+const char* ProgVersion = "RasPreenFM2 0.02j 32@48k " __DATE__ " " __TIME__;
 const char* line2 = "By styro2000";
 const char* line3 = "Based on PreenFM2";
 const char* line4 = "By Xavier Hosxe";
@@ -508,8 +507,6 @@ void CKernel::InitializeHiFiBerry(void){
 
 void CKernel::InitializeMAX6957(void){
 
-	u8 SPITxData[TEST_DATA_LENGTH];
-	u8 SPIRxBuffer[TEST_DATA_LENGTH];
 	unsigned int nCount = 0;
 
 // ENCODER A P26/27 
@@ -614,44 +611,13 @@ void CKernel::InitializeMAX6957(void){
 
 }
 
-uint32_t CKernel::ReadInputMAX6957(void){
-	u8 SPITxData[TEST_DATA_LENGTH];
-	u8 SPIRxBuffer[TEST_DATA_LENGTH];
+uint16_t CKernel::ReadInputMAX6957(void){
 
 
-	uint32_t ret = 0x000000;
+	uint16_t ret = 0x0000;
 
-	// SPITxData[0] = 0xD4;		//	Read Port P23-P20 Encoderswitches
-	// SPITxData[1] = 0x00;		//	
-	// if (m_SPIMaster.WriteRead (SPI_CHIP_SELECT, SPITxData, SPIRxBuffer, 2) != 2)
-	// {
-	// 	CLogger::Get ()->Write (FromKernel, LogPanic, "SPI write error 4");
-	// }
-
-	// m_Timer.SimpleusDelay(100);
-	// m_Timer.SimpleusDelay(30);
-	// ret |= (0x0F & SPIRxBuffer[1]) << 16;
-
-// 	SPITxData[0] = 0xD4;		//	Read Port P20-23 Encoder Switches 
-// 	SPITxData[1] = 0x00;		//
-// 	SPIRxBuffer[1] = 0;	
-// 	if (m_SPIMaster.WriteRead (SPI_CHIP_SELECT, SPITxData, SPIRxBuffer, 2) != 2)
-// 	{
-// 		CLogger::Get ()->Write (FromKernel, LogPanic, "SPI write error 4");
-// 	}
-
-// 	m_Timer.SimpleusDelay(100);
-// 	m_Timer.SimpleusDelay(30);
-// 	if (SPIRxBuffer[1] & 0x0F != 0x0F){
-//         out_led3.Set(1);
-
-// //		ret &= 0xFEFF;			// set switch as Encoderswitch 
-// 	}else{
-//         out_led3.Set(0);
-// 	}
-
-
-
+	memset(SPITxData,0, sizeof(SPITxData));
+	memset(SPIRxBuffer,0, sizeof(SPITxData));
 
 	SPITxData[0] = 0xCC;		//	Read Port P12-19 Switches 
 	SPITxData[1] = 0x00;		//	
@@ -662,9 +628,9 @@ uint32_t CKernel::ReadInputMAX6957(void){
 	}
 
 	m_Timer.SimpleusDelay(100);
-	m_Timer.SimpleusDelay(30);
-	ret = SPIRxBuffer[1] << 8;
 
+	memset(SPITxData,0, sizeof(SPITxData));
+	memset(SPIRxBuffer,0, sizeof(SPITxData));
 
 	SPITxData[0] = 0xD8;		//	Read Port P31-P24 Encoders
 	SPITxData[1] = 0x00;		//	
@@ -675,16 +641,46 @@ uint32_t CKernel::ReadInputMAX6957(void){
 	}
 
 	m_Timer.SimpleusDelay(100);
-	m_Timer.SimpleusDelay(30);
-	ret |= SPIRxBuffer[1];
+	ret = SPIRxBuffer[1];
+
+	memset(SPITxData,0, sizeof(SPITxData));
+	memset(SPIRxBuffer,0, sizeof(SPITxData));
+
+	SPITxData[0] = 0xD4;		//	Read Port P20 -P23 Encoder Switchs
+	SPITxData[1] = 0x00;		//	
+	SPIRxBuffer[1] = 0;	
+	if (m_SPIMaster.WriteRead (SPI_CHIP_SELECT, SPITxData, SPIRxBuffer, 2) != 2)
+	{
+		CLogger::Get ()->Write (FromKernel, LogPanic, "SPI write error 4");
+	}
+
+	m_Timer.SimpleusDelay(100);
+	ret |= SPIRxBuffer[1]<<8;
+
+	memset(SPITxData,0, sizeof(SPITxData));
+	memset(SPIRxBuffer,0, sizeof(SPITxData));
+
+	SPITxData[0] = 0xD4;		//	Read Port P20 -P23 Encoder Switchs
+	SPITxData[1] = 0x00;		//
+	SPIRxBuffer[1] = 0;	
+	if (m_SPIMaster.WriteRead (SPI_CHIP_SELECT, SPITxData, SPIRxBuffer, 2) != 2)
+	{
+		CLogger::Get ()->Write (FromKernel, LogPanic, "SPI write error 4");
+	}
+
+	m_Timer.SimpleusDelay(100);
+	
+	if ((SPIRxBuffer[1] & 0x0F)!= 0x0F){
+		ret &= ~(1 << 7);
+	}
 
 	return (ret);
 }
 
 void CKernel::writeLedMAX6957(uint8_t LED, uint8_t data){
 	// LED = 0,1,2
-	u8 SPITxData[TEST_DATA_LENGTH];
-	u8 SPIRxBuffer[TEST_DATA_LENGTH];
+	// u8 SPITxData[TEST_DATA_LENGTH];
+	// u8 SPIRxBuffer[TEST_DATA_LENGTH];
 
 	if (LED > 2)
 		return;

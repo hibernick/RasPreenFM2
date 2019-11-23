@@ -152,6 +152,7 @@ void Voice::noteOn(short newNote, short velocity, unsigned int index) {
 	this->newNotePending = false;
 	this->holdedByPedal = false;
 	this->index = index;
+	this->PlayingTime=0;
 
 	this->velIm1 = currentTimbre->params.engineIm1.modulationIndexVelo1 * (float)velocity * .0078125f;
 	this->velIm2 = currentTimbre->params.engineIm1.modulationIndexVelo2 * (float)velocity * .0078125f;
@@ -261,9 +262,12 @@ void Voice::killNow() {
     this->env4ValueMem = 0;
     this->env5ValueMem = 0;
     this->env6ValueMem = 0;
+//	this->PlayingTime = 0;
+		// styro samenotepolyphony
 }
 
 void Voice::nextBlock() {
+	this->PlayingTime++;					// styro samenotepolyphony
     updateAllMixOscsAndPans();
     // After matrix
     if (unlikely(this->newNotePlayed)) {
