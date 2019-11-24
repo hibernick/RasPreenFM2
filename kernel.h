@@ -44,6 +44,10 @@
 #include "RingBuffer.h"
 #include "screenx.h"
 
+#define TEST_DATA_LENGTH	11		// number of data bytes transfered
+
+
+
 extern RingBuffer<uint8_t, 200> usartBufferIn;
 extern RingBuffer<uint8_t, 100> usartBufferOut;
 extern unsigned int preenTimer;
@@ -72,7 +76,7 @@ public:
 private:
 	void InitializeHiFiBerry(void);
 	void InitializeMAX6957(void);
-	uint32_t ReadInputMAX6957(void);
+	uint16_t ReadInputMAX6957(void);
 	void writeLedMAX6957(uint8_t LED, uint8_t data);
 
 private:
@@ -103,6 +107,9 @@ private:
 //	CGPIOPin InPin;
 
 //	FATFS				m_FileSystem;
+	u8 SPITxData[TEST_DATA_LENGTH];
+	u8 SPIRxBuffer[TEST_DATA_LENGTH];
+
 
 };
 

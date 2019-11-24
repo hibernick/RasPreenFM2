@@ -52,6 +52,7 @@ public:
     bool isNewNotePending() { return this->newNotePending; }
     unsigned int getIndex() { return this->index; }
     char getNote() { return this->note; }
+    uint32_t getPlayingTime() { return this->PlayingTime; }
     char getNextPendingNote() { return this->nextPendingNote; }
     char getNextGlidingNote() { return this->nextGlidingNote; }
     bool isHoldedByPedal() { return this->holdedByPedal; }
@@ -359,6 +360,7 @@ private:
     float velocity;
     float velIm1, velIm2, velIm3, velIm4, velIm5;
     bool newNotePlayed;
+
     uint32_t PlayingTime=0;	// styro samenotepolyphony
     //
     float freqAi, freqAo;
@@ -404,6 +406,7 @@ private:
 
     // glide phase increment
     static float glidePhaseInc[10];
+
 
     // Matrix....
     Matrix matrix;

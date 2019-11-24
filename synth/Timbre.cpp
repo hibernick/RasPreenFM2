@@ -493,7 +493,11 @@ void Timbre::preenNoteOff(char note) {
 				if (unlikely(holdPedal)) {
 					voices[n]->setHoldedByPedal(true);
 					return;
+<<<<<<< HEAD
 				} else {
+=======
+				} else {																	// styro samenotepolyphony
+>>>>>>> 97cae705fa6383d99f23653f496f23525be356ea
 					VoiceLong = voices[n]->getPlayingTime();
 					if (MaxPlay < VoiceLong){
 						MaxPlay = VoiceLong;						
@@ -501,8 +505,13 @@ void Timbre::preenNoteOff(char note) {
 					}					
 					// voices[n]->noteOff();
 					// return;
+<<<<<<< HEAD
 					LongestNoteVoice = n;
 					break;
+=======
+					// LongestNoteVoice = n;
+//					break;
+>>>>>>> 97cae705fa6383d99f23653f496f23525be356ea
 				}
 			}
 		} else {
@@ -519,10 +528,16 @@ void Timbre::preenNoteOff(char note) {
 			}
 		}
 	}
+<<<<<<< HEAD
 	if (LongestNoteVoice >= 0){
 		voices[LongestNoteVoice]->noteOff();													// styro samenotepolyphony
 	}
 	return;
+=======
+	voices[LongestNoteVoice]->noteOff();													// styro samenotepolyphony
+	return;
+
+>>>>>>> 97cae705fa6383d99f23653f496f23525be356ea
 }
 
 

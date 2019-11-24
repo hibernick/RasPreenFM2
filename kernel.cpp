@@ -508,8 +508,6 @@ void CKernel::InitializeHiFiBerry(void){
 
 void CKernel::InitializeMAX6957(void){
 
-	u8 SPITxData[TEST_DATA_LENGTH];
-	u8 SPIRxBuffer[TEST_DATA_LENGTH];
 	unsigned int nCount = 0;
 
 // ENCODER A P26/27 
@@ -614,6 +612,7 @@ void CKernel::InitializeMAX6957(void){
 
 }
 
+<<<<<<< HEAD
 uint32_t CKernel::ReadInputMAX6957(void){
 	u8 SPITxData[TEST_DATA_LENGTH];
 	u8 SPIRxBuffer[TEST_DATA_LENGTH];
@@ -623,6 +622,16 @@ uint32_t CKernel::ReadInputMAX6957(void){
 	memset(SPITxData,0, sizeof(SPITxData));
 	memset(SPIRxBuffer,0, sizeof(SPITxData));
 
+=======
+uint16_t CKernel::ReadInputMAX6957(void){
+
+
+	uint16_t ret = 0x0000;
+
+	memset(SPITxData,0, sizeof(SPITxData));
+	memset(SPIRxBuffer,0, sizeof(SPITxData));
+
+>>>>>>> 97cae705fa6383d99f23653f496f23525be356ea
 	SPITxData[0] = 0xCC;		//	Read Port P12-19 Switches 
 	SPITxData[1] = 0x00;		//	
 	SPIRxBuffer[1] = 0;	
@@ -683,8 +692,8 @@ uint32_t CKernel::ReadInputMAX6957(void){
 
 void CKernel::writeLedMAX6957(uint8_t LED, uint8_t data){
 	// LED = 0,1,2
-	u8 SPITxData[TEST_DATA_LENGTH];
-	u8 SPIRxBuffer[TEST_DATA_LENGTH];
+	// u8 SPITxData[TEST_DATA_LENGTH];
+	// u8 SPIRxBuffer[TEST_DATA_LENGTH];
 
 	if (LED > 2)
 		return;

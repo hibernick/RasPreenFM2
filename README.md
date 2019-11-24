@@ -6,7 +6,7 @@ BareMetal RasperryPi Port of the PreenFM2 Synthesizer https://github.com/Ixox/pr
 included extrafilters from https://github.com/pvig/preenfm2
 
 The PreenFM2-Synth looked really good but i was not happy with the STM32-uController...
-I really like the STM32 uControllers and did some Projects with them but i was constantly annoyed with the buggy and rather strange Software-Support of STM (CubeMX-Code-Generator produces buggy code, poor support etc, its a pitty because i really liked the STM32F-Disco Kits).
+I really like the STM32 uControllers and did some Projects with them but i was constantly annoyed with the buggy and rather strange Software-Support of STM (HAL-Layer rather kludgy, CubeMX-Code-Generator produces buggy code, poor support etc, its a pitty because i really liked the STM32F-Disco Kits, and an SPI BUSY Errata that costed me lot of time & hair....).
 Then i stumbled over the Circle-Framework for BareMetal Programming of the Raspberry Pi https://github.com/rsta2/minisynth
 and ported PreenFM2 with it to Raspi 3B, HiFiBerry DAC+ Audiocard and a MAX6957 for the connection to the encoders and buttons.
 (see hardware/Encoders.cpp for details) and got a latency of about < 3ms @ 48kHz
@@ -18,7 +18,7 @@ The Port is a really ugly hack, was does not work:
 - Clock-Led
 - probably more :-(
 
-About the code, there are probably much better ways to do things...
+About the code, i wanted to get this quick up and running without changing to much, so i made some evil things...
 
 Its compiled as 64Bit, just put the kernel8.img, bootcode.bin, start.elf & fixup.dat in the root of the sd-card
 of your Raspi 3B(+) and off you go!
@@ -43,16 +43,61 @@ What i didn't find out was a compatible assembler instruction for
  
 but it worked without :-) (but if somebody could give me a hint it would be great!)
 
-The soundbuffer-calculating in the main loop didn't work to well, gave glitches while screen
+The soundbuffer-calculating async in the main loop didn't work to well, gave glitches while screen
 writes, so i put the calculating in the DMA-Irq of the sounddevice.
 A strange thing happened then, it crashed in prepareMatrixForNewBlock in the LFO Section
 while loading a new patch (during the usb-file operations). A long and fruitless search
-why? didnt help so i did a really ugly hack and disabled the prepareMatrixForNewBlock
+why? didnt help so i did a really ugly hack and disabled the prepareMatrixForNewBlock()
 while loading patches.
+
+Other things i changed:
+- Changed BLOCK_SIZE to 16, gave me first horrible aliasing in the higher notes, changing 
+  Osc.h Line 128
+    for (int k=0; k<32; ) 
+    to
+    for (int k=0; k<BLOCK_SIZE; ) {
+  seemed to help, and go thru                
+    timbres[t].prepareForNextBlock();
+    timbres[t].prepareMatrixForNewBlock();
+  only every 2nd time buildNewSampleBlock() is called to compensate the internal BPM etc 
+  once i fully understand whats going on here, i might do a less kludgy hack but for the moment it seems
+  to work...
+
+- When the same note is struck again it allocates a new voice (if voice > 1) instead cutting off the voice.
+  On NoteOff it switches of the longer running voice first.
+
+- The ComboName is memorized on load/save and used as default for saving 
+
+- integrated the extra filters
+
+- changed the glide-times to longer
+
+- some checks reading the settings values and prevent loading DX7-Patches > 31 over MIDI ProgramChange
+  that would crash the Raspreen.
+
+known Bugz:
+- sometimes it ignores a note, no idea what it could be, will take probably long to figure out, till then
+  it goes as "mandatory humanize"-function :-)   
+
+ToDo:
+- More Polyphony and Operators :-)
+  the RaspberryPi is quit powerful and the load with 4Timbres à 2Voices with 6 Operators + Filters is about 15%
+  of the SoundDevice Interrupt so this should be doable when i understand how to do it....
+
+- usb-midi
+
+- sort of bootmode to access the SD-Card or USB-Stick from outside, the RaspberryPi does not have a USB-Device/OTG
+  functionality, so probably over ethernet or so, but in the meantime popping them out and putting them in the
+  computer to transfer data is not so terrible....    
+
+- nicer GUI
+  actually i find the usability very good for the limited amount of Buttons/Encoders and the editor is great,
+  and changing this would take quite some time so this is not on the priority-list
+
 
 Hope that anybody has fun using the synth and many thanks for bug reports!
 
-Many thanks goes out to Xavier Hosxe for the great PreenFM2 and R. Stange for the amazing Circle Framework!
+Many thanks goes out to Xavier Hosxe for the great PreenFM2-Synth and R. Stange for the amazing Circle Framework!
 
  * THIS IS ALPHA-SOFTWARE! DONT USE IT FOR LIVE PURPOSES! 
  * I AM NOT RESPONSIBLE FOR ANY TRAGEDIES AT GIGS :-)
