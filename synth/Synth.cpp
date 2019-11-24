@@ -137,27 +137,27 @@ void Synth::buildNewSampleBlock() {
 
     for (int t=0; t<NUMBER_OF_TIMBRES; t++) {
         timbres[t].cleanNextBlock();
-        if (likely(timbres[t].params.engine1.numberOfVoice > 0)) {
-            timbres[t].prepareForNextBlock();
+        if(BlockDivider & 0x01){    // bloody hack to compensate the twice as often buildNewSampleBlock @ BLOCK_SIZE 16 for Envs/BPMs/etc   
+            if (likely(timbres[t].params.engine1.numberOfVoice > 0)) {
+                timbres[t].prepareForNextBlock();
             // eventually glide
-            if (timbres[t].voiceNumber[0] != -1 && this->voices[timbres[t].voiceNumber[0]].isGliding()) {
-                this->voices[timbres[t].voiceNumber[0]].glide();
+                if (timbres[t].voiceNumber[0] != -1 && this->voices[timbres[t].voiceNumber[0]].isGliding()) {
+                    this->voices[timbres[t].voiceNumber[0]].glide();
+                }
             }
-        }
-        if (usb_filesomething_hack == 0){   // hack prevent crashing at prepareMatrixForNewBlock() while usb
-            out_led2.Set(0);
-            if(BlockDivider & 0x01){    // bloody hack to compensate the twice as often buildNewSampleBlock @ BLOCK_SIZE 16 for Envs/BPMs/etc   
+            if (usb_filesomething_hack == 0){   // hack prevent crashing at prepareMatrixForNewBlock() while usb
+//                out_led2.Set(0);
                 timbres[t].prepareMatrixForNewBlock();
-            }
-        }else{
-            if (usb_filesomething_hack != 5){
-                // if ((usb_filesomething_hack-1) != t){
-                //     timbres[t].prepareMatrixForNewBlock();              
-                // }else{
-                //     out_led2.Set(1);
-                // }
             }else{
-                out_led2.Set(1);
+                if (usb_filesomething_hack != 5){
+                    // if ((usb_filesomething_hack-1) != t){
+                    //     timbres[t].prepareMatrixForNewBlock();              
+                    // }else{
+                    //     out_led2.Set(1);
+                    // }
+                }else{
+//                    out_led2.Set(1);
+                }
             }
         }
     }

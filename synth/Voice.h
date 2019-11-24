@@ -346,6 +346,8 @@ public:
         }
     }
 
+    uint32_t getPlayingTime() { return this->PlayingTime; }
+
 
 private:
     // voice status
@@ -357,6 +359,7 @@ private:
     float velocity;
     float velIm1, velIm2, velIm3, velIm4, velIm5;
     bool newNotePlayed;
+    uint32_t PlayingTime=0;	// styro samenotepolyphony
     //
     float freqAi, freqAo;
     float freqBi, freqBo;

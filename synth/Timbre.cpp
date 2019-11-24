@@ -381,22 +381,22 @@ void Timbre::preenNoteOn(char note, char velocity) {
         }
 
 		// same note = priority 1 : take the voice immediatly
-		if (unlikely(voices[n]->isPlaying() && voices[n]->getNote() == note)) {
+// 		if (unlikely(voices[n]->isPlaying() && voices[n]->getNote() == note)) {		// styro samenotepolyphony
 
-#ifdef DEBUG_VOICE
-		lcd.setRealTimeAction(true);
-		lcd.setCursor(16,1);
-		lcd.print(cptHighNote++);
-		lcd.setCursor(16,2);
-		lcd.print("S:");
-		lcd.print(n);
-#endif
+// #ifdef DEBUG_VOICE
+// 		lcd.setRealTimeAction(true);
+// 		lcd.setCursor(16,1);
+// 		lcd.print(cptHighNote++);
+// 		lcd.setCursor(16,2);
+// 		lcd.print("S:");
+// 		lcd.print(n);
+// #endif
 
-            preenNoteOnUpdateMatrix(n, note, velocity);
-            voices[n]->noteOnWithoutPop(note, velocity, voiceIndex++);
-            this->lastPlayedNote = n;
-			return;
-		}
+//             preenNoteOnUpdateMatrix(n, note, velocity);
+//             voices[n]->noteOnWithoutPop(note, velocity, voiceIndex++);
+//             this->lastPlayedNote = n;
+// 			return;
+// 		}
 
 		// unlikely because if it true, CPU is not full
 		if (unlikely(newNoteType > NEW_NOTE_FREE)) {
@@ -475,6 +475,9 @@ void Timbre::preenNoteOnUpdateMatrix(int voiceToUse, int note, int velocity) {
 
 void Timbre::preenNoteOff(char note) {
 	int iNov = (int) params.engine1.numberOfVoice;
+	uint32_t VoiceLong=0;
+	uint32_t MaxPlay=0;
+	int	LongestNoteVoice=-1;
 	for (int k = 0; k < iNov; k++) {
 		// voice number k of timbre
 		int n = voiceNumber[k];
@@ -485,13 +488,21 @@ void Timbre::preenNoteOff(char note) {
 		}
 
 		if (likely(voices[n]->getNextGlidingNote() == 0)) {
-			if (voices[n]->getNote() == note) {
+//			if (voices[n]->getNote() == note) {
+			if ((voices[n]->getNote() == note) && (!voices[n]->isReleased())) {				// styro samenotepolyphony
 				if (unlikely(holdPedal)) {
 					voices[n]->setHoldedByPedal(true);
 					return;
 				} else {
-					voices[n]->noteOff();
-					return;
+					VoiceLong = voices[n]->getPlayingTime();
+					if (MaxPlay < VoiceLong){
+						MaxPlay = VoiceLong;						
+						LongestNoteVoice = n;
+					}					
+					// voices[n]->noteOff();
+					// return;
+					LongestNoteVoice = n;
+					break;
 				}
 			}
 		} else {
@@ -508,6 +519,10 @@ void Timbre::preenNoteOff(char note) {
 			}
 		}
 	}
+	if (LongestNoteVoice >= 0){
+		voices[LongestNoteVoice]->noteOff();													// styro samenotepolyphony
+	}
+	return;
 }
 
 

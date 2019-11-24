@@ -908,7 +908,11 @@ void CScreenDeviceX::SetPixel (unsigned nPosX, unsigned nPosY, TScreenColor Colo
 	if (   nPosX < m_nWidth
 	    && nPosY < m_nHeight)
 	{
-		m_pBuffer[m_nPitch * nPosY + nPosX] = Color;
+		if (likely(m_bFlipMode==0)){
+			m_pBuffer[m_nPitch * nPosY + nPosX] = Color;
+		}else{
+			m_pBuffer[(m_nPitch * m_nHeight + m_nWidth)-(m_nPitch * nPosY + nPosX)] = Color;
+		}
 	}
 }
 
@@ -917,7 +921,12 @@ TScreenColor CScreenDeviceX::GetPixel (unsigned nPosX, unsigned nPosY)
 	if (   nPosX < m_nWidth
 	    && nPosY < m_nHeight)
 	{
-		return m_pBuffer[m_nPitch * nPosY + nPosX];
+		if (likely(m_bFlipMode==0)){
+			return m_pBuffer[m_nPitch * nPosY + nPosX];
+		}else{
+			return m_pBuffer[(m_nPitch * m_nHeight + m_nWidth)-(m_nPitch * nPosY + nPosX)];
+		}
+			
 	}
 	
 	return m_BGColor;
