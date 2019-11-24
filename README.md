@@ -81,7 +81,7 @@ known Bugz:
 
 ToDo:
 - More Polyphony and Operators :-)
-  the RaspberryPi is quit powerful and the load with 4Timbres à 2Voices with 6 Operators + Filters is about 15%
+  the RaspberryPi is quite powerful and the load with 4Timbres à 2Voices with 6 Operators + Filters is about 15%
   of the SoundDevice Interrupt so this should be doable when i understand how to do it....
 
 - usb-midi
