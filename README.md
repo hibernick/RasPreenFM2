@@ -1,6 +1,6 @@
 # RasPreenFM2
 
-!/RasPreenFM2/RasPreenFM2_test.jpg
+!https://github.com/styro2000/RasPreenFM2/blob/master/RasPreenFM2_test.jpg
 
 BareMetal RasperryPi Port of the PreenFM2 Synthesizer https://github.com/Ixox/preenfm2
 included extrafilters from https://github.com/pvig/preenfm2
@@ -38,12 +38,17 @@ go in the raspreen directory and do make
 
 What i didn't find out was a compatible assembler instruction for
 
-`#define __USAT(ARG1,ARG2) \`
-`({                          \`
-`  uint32_t __RES, __ARG1 = (ARG1); \`
-`  __ASM ("usat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) ); \`
-`  __RES; \`
-` })`
+`#define __USAT(ARG1,ARG2) \
+
+({                          \
+
+  uint32_t __RES, __ARG1 = (ARG1); \
+
+  __ASM ("usat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) ); \
+
+  __RES; \
+
+ })`
  
  
 but it worked without :-) (but if somebody could give me a hint it would be great!)
@@ -63,7 +68,7 @@ Other things i changed:
     for (int k=0; k<BLOCK_SIZE; ) {
   seemed to help
 
-- the BPM/LFO/Env/ARP/etc internal temp changed to the smaler BLOCKSIZE
+- the BPM/LFO/Env/ARP/etc internal clock changed to the smaler BLOCKSIZE
 
 - the Operators start a 0°, didn't like the Click to much at 90° 
 
