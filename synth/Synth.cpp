@@ -125,8 +125,7 @@ void Synth::buildNewSampleBlock() {
     // We consider the random number is always ready here...
     uint32_t random32bit = m_Random.GetNumber();
 
-    BlockDivider++;
-
+ 
     noise[0] =  (random32bit & 0xffff) * .000030518f - 1.0f; // value between -1 and 1.
     noise[1] = (random32bit >> 16) * .000030518f - 1.0f; // value between -1 and 1.
     for (int noiseIndex = 2; noiseIndex<32; ) {
@@ -137,7 +136,6 @@ void Synth::buildNewSampleBlock() {
 
     for (int t=0; t<NUMBER_OF_TIMBRES; t++) {
         timbres[t].cleanNextBlock();
-        if(BlockDivider & 0x01){    // bloody hack to compensate the twice as often buildNewSampleBlock @ BLOCK_SIZE 16 for Envs/BPMs/etc   
             if (likely(timbres[t].params.engine1.numberOfVoice > 0)) {
                 timbres[t].prepareForNextBlock();
             // eventually glide
@@ -159,7 +157,6 @@ void Synth::buildNewSampleBlock() {
 //                    out_led2.Set(1);
                 }
             }
-        }
     }
 
     // render all voices in their timbre sample block...

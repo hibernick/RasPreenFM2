@@ -1,6 +1,6 @@
 # RasPreenFM2
 
-https://github.com/styro2000/RasPreenFM2/blob/master/RasPreenFM2_test.jpg
+!/RasPreenFM2_test.jpg
 
 BareMetal RasperryPi Port of the PreenFM2 Synthesizer https://github.com/Ixox/preenfm2
 included extrafilters from https://github.com/pvig/preenfm2
@@ -27,19 +27,20 @@ The best way to build it ist to get https://github.com/rsta2/minisynth and build
 the addon/fats must also be build. I used gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin/aarch64-elf- as compiler
 then copy the raspreen directory instead of the src directory
 i had to change line 63 in circle/Rules.mk to
-ARCH    ?= -DAARCH=64 -march=armv8-a+fp+simd -mtune=cortex-a53 -mlittle-endian  -mcmodel=small
+`ARCH    ?= -DAARCH=64 -march=armv8-a+fp+simd -mtune=cortex-a53 -mlittle-endian  -mcmodel=small`
 and the flags (line 121) to
-CFLAGS    += $(ARCH) -Wall -fsigned-char -ffreestanding -mstrict-align $(DEFINE) $(INCLUDE) $(OPTIMIZE) -g
-and in the raspreen directory do make
+`CFLAGS    += $(ARCH) -Wall -fsigned-char -ffreestanding -mstrict-align $(DEFINE) $(INCLUDE) $(OPTIMIZE) -g`
+go in the raspreen directory and do make
 
 What i didn't find out was a compatible assembler instruction for
 
-#define __USAT(ARG1,ARG2) \
+`#define __USAT(ARG1,ARG2) \
 ({                          \
   uint32_t __RES, __ARG1 = (ARG1); \
   __ASM ("usat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) ); \
   __RES; \
  })
+ `
  
 but it worked without :-) (but if somebody could give me a hint it would be great!)
 
@@ -56,12 +57,11 @@ Other things i changed:
     for (int k=0; k<32; ) 
     to
     for (int k=0; k<BLOCK_SIZE; ) {
-  seemed to help, and go thru                
-    timbres[t].prepareForNextBlock();
-    timbres[t].prepareMatrixForNewBlock();
-  only every 2nd time buildNewSampleBlock() is called to compensate the internal BPM etc 
-  once i fully understand whats going on here, i might do a less kludgy hack but for the moment it seems
-  to work...
+  seemed to help
+
+- the BPM/LFO/Env/ARP/etc internal temp changed to the smaler BLOCKSIZE
+
+- the Operators start a 0°, didn't like the Click to much at 90° 
 
 - When the same note is struck again it allocates a new voice (if voice > 1) instead cutting off the voice.
   On NoteOff it switches of the longer running voice first.

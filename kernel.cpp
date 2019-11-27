@@ -92,7 +92,7 @@ Hexter             hexter;
 
 static const char FromKernel[] = "kernel";
 
-const char* ProgVersion = "RasPreenFM2 0.02p 32@48k " __DATE__ " " __TIME__;
+const char* ProgVersion = "RasPreenFM2 0.03c 32@48k " __DATE__ " " __TIME__;
 const char* line2 = "By styro2000";
 const char* line3 = "Based on PreenFM2";
 const char* line4 = "By Xavier Hosxe";
@@ -170,18 +170,6 @@ boolean CKernel::Initialize (void)
 		bOK = m_SPIMaster.Initialize ();
 	}
 
-
-	// if (bOK)
-	// {
-	// 	m_TouchScreen.Initialize ();
-
-	// 	bOK = m_GUI.Initialize ();
-	// }
-
-	// if (bOK)
-	// {
-	// 	m_LVGScreen.Initialize (&m_GUI);
-	// }
 
 	if (bOK)
 	{
@@ -326,8 +314,6 @@ boolean CKernel::Initialize (void)
 
 TShutdownMode CKernel::Run (void)
 {
-	u8 SPITxData[TEST_DATA_LENGTH];
-	u8 SPIRxBuffer[TEST_DATA_LENGTH];
 	unsigned int nCount = 0;
 
 	out_led1.Set(0);
@@ -366,7 +352,6 @@ TShutdownMode CKernel::Run (void)
 	while (1)
 	{
 	    newPreenTimer = preenTimer;
-//		fillSoundBuffer();
 //		out_led2.Invert();
 
 		if (counter%2000000 == 0){
@@ -377,18 +362,15 @@ TShutdownMode CKernel::Run (void)
 		while (usartBufferIn.getCount() > 0) {
 			out_led1.Invert();
 
-//			fillSoundBuffer();
 			midiDecoder.newByte(usartBufferIn.remove());
 		}
 		if ((newPreenTimer - encoderTimer) > 60) {
-//			fillSoundBuffer();
 			ButtonEncoderRegister = (uint16_t)ReadInputMAX6957();
 		  	out_led2.Set(1);
 			encoders.checkStatus(synthState.fullState.midiConfigValue[MIDICONFIG_ENCODER]);
  			out_led2.Set(0);
 			encoderTimer = newPreenTimer;
 		} else if (fmDisplay.needRefresh()) {
-//			fillSoundBuffer();
 			fmDisplay.refreshAllScreenByStep();
 		}
 
@@ -396,7 +378,6 @@ TShutdownMode CKernel::Run (void)
 
 
 		if ((newPreenTimer - tempoTimer) > 10000) {
-//			fillSoundBuffer();
 			synthState.tempoClick();
 			fmDisplay.tempoClick();
 			tempoTimer = newPreenTimer;
@@ -407,13 +388,11 @@ TShutdownMode CKernel::Run (void)
 		while (lcd.hasActions()) {
 			if (usartBufferIn.getCount() > 20) {
 				while (usartBufferIn.getCount() > 0) {
-//					fillSoundBuffer();
 					midiDecoder.newByte(usartBufferIn.remove());
 				}
 			}
 			LCDAction action = lcd.nextAction();
 			lcd.realTimeAction(&action);
-//        	lcd.realTimeAction(&action, fillSoundBuffer);
 		}
 	}
 

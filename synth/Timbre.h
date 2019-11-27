@@ -182,7 +182,8 @@ private:
 
     // TO REFACTOR
     float ticksPerSecond;
-    static constexpr float calledPerSecond = PREENFM_FREQUENCY / 32.0f;
+//    static constexpr float calledPerSecond = PREENFM_FREQUENCY / 32.0f;
+    static constexpr float calledPerSecond = PREENFM_FREQUENCY / (float) BLOCK_SIZE;       // styro 48kHz / 16 = 3000Hz
     float ticksEveryNCalls;
     int ticksEveyNCallsInteger;
 
