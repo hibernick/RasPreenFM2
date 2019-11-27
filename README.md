@@ -23,7 +23,7 @@ About the code, i wanted to get this quick up and running without changing to mu
 Its compiled as 64Bit, just put the kernel8.img, bootcode.bin, start.elf & fixup.dat in the root of the sd-card
 of your Raspi 3B(+) and off you go!
 
-The best way to build it ist to get https://github.com/rsta2/minisynth and build it to test the framework,
+The best way to build it is to get https://github.com/rsta2/minisynth and build it to test the framework,
 the addon/fats must also be build. I used gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin/aarch64-elf- as compiler
 then copy the raspreen directory instead of the src directory
 i had to change line 63 in circle/Rules.mk to
@@ -34,21 +34,27 @@ and the flags (line 121) to
 
 `CFLAGS    += $(ARCH) -Wall -fsigned-char -ffreestanding -mstrict-align $(DEFINE) $(INCLUDE) $(OPTIMIZE) -g`
 
-go in the raspreen directory and do make
+i added at line 156 at the `clean` section
+`	find . -type f -name '*.o' -delete`
+to clean up all subdirs
+
+
+Get the Source
+do `git clone https://github.com/styro2000/RasPreenFM2.git RasPreenFM2`
+in the minisynth directory
+
+go in the RasPreenFM2 directory and do make
 
 What i didn't find out was a compatible assembler instruction for
 
-`#define __USAT(ARG1,ARG2) \
-
+```
+#define __USAT(ARG1,ARG2) \
 ({                          \
-
   uint32_t __RES, __ARG1 = (ARG1); \
-
   __ASM ("usat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) ); \
-
   __RES; \
-
- })`
+ })
+ ```
  
  
 but it worked without :-) (but if somebody could give me a hint it would be great!)
@@ -61,14 +67,14 @@ why? didnt help so i did a really ugly hack and disabled the prepareMatrixForNew
 while loading patches.
 
 Other things i changed:
-- Changed BLOCK_SIZE to 16, gave me first horrible aliasing in the higher notes, changing 
+- Changed BLOCK_SIZE to 16 for smaller latency, gave me first horrible aliasing in the higher notes, changing 
   Osc.h Line 128
     for (int k=0; k<32; ) 
     to
     for (int k=0; k<BLOCK_SIZE; ) {
   seemed to help
 
-- the BPM/LFO/Env/ARP/etc internal clock changed to the smaler BLOCKSIZE
+- the BPM/LFO/Env/ARP/etc internal clock changed to match the smaler BLOCKSIZE
 
 - the Operators start a 0°, didn't like the Click to much at 90° 
 
