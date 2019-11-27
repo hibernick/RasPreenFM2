@@ -41,6 +41,7 @@ and build it to make & test the framework,
 the addon/fatfs must also be build.
 
 To Compile the RasPreenFM2
+
 in the minisynth directory 
 do `git clone https://github.com/styro2000/RasPreenFM2.git RasPreenFM2`  to get the Source
 
