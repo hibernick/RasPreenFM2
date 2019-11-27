@@ -23,8 +23,25 @@ About the code, i wanted to get this quick up and running without changing to mu
 Its compiled as 64Bit, just put the kernel8.img, bootcode.bin, start.elf & fixup.dat in the root of the sd-card
 of your Raspi 3B(+) and off you go!
 
-The best way to build it is to get https://github.com/rsta2/minisynth and build it to test the framework,
-the addon/fats must also be build. I used gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin/aarch64-elf- as compiler
+The best way to build it is to get https://github.com/rsta2/minisynth 
+set in circle/Rules.mk
+
+```
+AARCH	 ?= 64
+RASPPI	 ?= 3
+PREFIX	 ?= arm-eabi-
+PREFIX64 ?= /home/where/your/crosscompiler/lives/gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin/aarch64-elf-
+```
+
+Change the Sounddevice in src/config.h
+`#define USE_I2S`
+
+and build it to make & test the framework,
+the addon/fatfs must also be build.
+
+To Compile the RasPreenFM2
+in the minisynth directory 
+do `git clone https://github.com/styro2000/RasPreenFM2.git RasPreenFM2`  to get the Source
 
 i had to change line 63 in circle/Rules.mk to
 
@@ -37,11 +54,6 @@ and the flags (line 121) to
 i added at line 156 at the `clean` section
 `	find . -type f -name '*.o' -delete`
 to clean up all subdirs
-
-
-To Compile the thing 
-do `git clone https://github.com/styro2000/RasPreenFM2.git RasPreenFM2`  to get the Source
-in the minisynth directory 
 
 cd in the RasPreenFM2 directory and do 
 make
@@ -75,7 +87,7 @@ Other things i changed:
     for (int k=0; k<BLOCK_SIZE; ) {
   seemed to help
 
-- the BPM/LFO/Env/ARP/etc internal clock changed to match the smaler BLOCKSIZE
+- the BPM/LFO/Env/ARP/etc internal clock changed to match the smaller BLOCKSIZE
 
 - the Operators start a 0°, didn't like the Click to much at 90° 
 
