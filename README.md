@@ -1,6 +1,6 @@
 # RasPreenFM2
 
-!https://github.com/styro2000/RasPreenFM2/blob/master/RasPreenFM2_test.jpg
+![image](https://github.com/styro2000/RasPreenFM2/blob/master/RasPreenFM2_test.jpg)
 
 BareMetal RasperryPi Port of the PreenFM2 Synthesizer https://github.com/Ixox/preenfm2
 included extrafilters from https://github.com/pvig/preenfm2
