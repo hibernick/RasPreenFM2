@@ -1,6 +1,6 @@
 # RasPreenFM2
 
-!/RasPreenFM2_test.jpg
+!/RasPreenFM2/RasPreenFM2_test.jpg
 
 BareMetal RasperryPi Port of the PreenFM2 Synthesizer https://github.com/Ixox/preenfm2
 included extrafilters from https://github.com/pvig/preenfm2
@@ -27,20 +27,24 @@ The best way to build it ist to get https://github.com/rsta2/minisynth and build
 the addon/fats must also be build. I used gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin/aarch64-elf- as compiler
 then copy the raspreen directory instead of the src directory
 i had to change line 63 in circle/Rules.mk to
+
 `ARCH    ?= -DAARCH=64 -march=armv8-a+fp+simd -mtune=cortex-a53 -mlittle-endian  -mcmodel=small`
+
 and the flags (line 121) to
+
 `CFLAGS    += $(ARCH) -Wall -fsigned-char -ffreestanding -mstrict-align $(DEFINE) $(INCLUDE) $(OPTIMIZE) -g`
+
 go in the raspreen directory and do make
 
 What i didn't find out was a compatible assembler instruction for
 
-`#define __USAT(ARG1,ARG2) \
-({                          \
-  uint32_t __RES, __ARG1 = (ARG1); \
-  __ASM ("usat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) ); \
-  __RES; \
- })
- `
+`#define __USAT(ARG1,ARG2) \`
+`({                          \`
+`  uint32_t __RES, __ARG1 = (ARG1); \`
+`  __ASM ("usat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) ); \`
+`  __RES; \`
+` })`
+ 
  
 but it worked without :-) (but if somebody could give me a hint it would be great!)
 
