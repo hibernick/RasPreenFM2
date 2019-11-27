@@ -92,7 +92,7 @@ Hexter             hexter;
 
 static const char FromKernel[] = "kernel";
 
-const char* ProgVersion = "RasPreenFM2 0.02o 32@48k " __DATE__ " " __TIME__;
+const char* ProgVersion = "RasPreenFM2 0.02p 32@48k " __DATE__ " " __TIME__;
 const char* line2 = "By styro2000";
 const char* line3 = "Based on PreenFM2";
 const char* line4 = "By Xavier Hosxe";
@@ -612,26 +612,13 @@ void CKernel::InitializeMAX6957(void){
 
 }
 
-<<<<<<< HEAD
-uint32_t CKernel::ReadInputMAX6957(void){
-	u8 SPITxData[TEST_DATA_LENGTH];
-	u8 SPIRxBuffer[TEST_DATA_LENGTH];
-
-	uint16_t ret = 0x0000;
-
-	memset(SPITxData,0, sizeof(SPITxData));
-	memset(SPIRxBuffer,0, sizeof(SPITxData));
-
-=======
 uint16_t CKernel::ReadInputMAX6957(void){
 
-
 	uint16_t ret = 0x0000;
 
 	memset(SPITxData,0, sizeof(SPITxData));
 	memset(SPIRxBuffer,0, sizeof(SPITxData));
 
->>>>>>> 97cae705fa6383d99f23653f496f23525be356ea
 	SPITxData[0] = 0xCC;		//	Read Port P12-19 Switches 
 	SPITxData[1] = 0x00;		//	
 	SPIRxBuffer[1] = 0;	

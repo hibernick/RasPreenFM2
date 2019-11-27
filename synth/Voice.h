@@ -347,8 +347,6 @@ public:
         }
     }
 
-    uint32_t getPlayingTime() { return this->PlayingTime; }
-
 
 private:
     // voice status
