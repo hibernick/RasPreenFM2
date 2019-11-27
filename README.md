@@ -6,7 +6,7 @@ BareMetal RasperryPi Port of the PreenFM2 Synthesizer https://github.com/Ixox/pr
 included extrafilters from https://github.com/pvig/preenfm2
 
 The PreenFM2-Synth looked really good but i was not happy with the STM32-uController...
-I really like the STM32 uControllers and did some Projects with them but i was constantly annoyed with the buggy and rather strange Software-Support of STM (HAL-Layer rather kludgy, CubeMX-Code-Generator produces buggy code, poor support etc, its a pitty because i really liked the STM32F-Disco Kits, and an SPI BUSY Errata that costed me lot of time & hair....).
+I really like the STM32 uControllers and did some Projects with them but i was constantly annoyed with the buggy and rather strange Software-Support of STM (HAL-Layer rather kludgy, CubeMX-Code-Generator produces buggy code, poor support etc, its a pitty because i really liked the STM32F-Disco Kits, but an SPI BUSY Errata that costed me to much time & hair....).
 Then i stumbled over the Circle-Framework for BareMetal Programming of the Raspberry Pi https://github.com/rsta2/minisynth
 and ported PreenFM2 with it to Raspi 3B, HiFiBerry DAC+ Audiocard and a MAX6957 for the connection to the encoders and buttons.
 (see hardware/Encoders.cpp for details) and got a latency of about < 3ms @ 48kHz
@@ -25,7 +25,7 @@ of your Raspi 3B(+) and off you go!
 
 The best way to build it is to get https://github.com/rsta2/minisynth and build it to test the framework,
 the addon/fats must also be build. I used gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin/aarch64-elf- as compiler
-then copy the raspreen directory instead of the src directory
+
 i had to change line 63 in circle/Rules.mk to
 
 `ARCH    ?= -DAARCH=64 -march=armv8-a+fp+simd -mtune=cortex-a53 -mlittle-endian  -mcmodel=small`
@@ -39,11 +39,12 @@ i added at line 156 at the `clean` section
 to clean up all subdirs
 
 
-Get the Source
-do `git clone https://github.com/styro2000/RasPreenFM2.git RasPreenFM2`
-in the minisynth directory
+To Compile the thing 
+do `git clone https://github.com/styro2000/RasPreenFM2.git RasPreenFM2`  to get the Source
+in the minisynth directory 
 
-go in the RasPreenFM2 directory and do make
+cd in the RasPreenFM2 directory and do 
+make
 
 What i didn't find out was a compatible assembler instruction for
 
