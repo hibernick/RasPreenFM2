@@ -23,7 +23,8 @@ About the code, i wanted to get this quick up and running without changing to mu
 Its compiled as 64Bit, just put the kernel8.img, bootcode.bin, start.elf & fixup.dat in the root of the sd-card
 of your Raspi 3B(+) and off you go!
 
-The best way to build it is to get https://github.com/rsta2/minisynth 
+The best way to build it is to get https://github.com/rsta2/minisynth
+
 set in circle/Rules.mk
 
 ```
@@ -51,7 +52,7 @@ and the flags (line 121) to
 
 `CFLAGS    += $(ARCH) -Wall -fsigned-char -ffreestanding -mstrict-align $(DEFINE) $(INCLUDE) $(OPTIMIZE) -g`
 
-i added at line 156 at the `clean` section
+i added at line 156 at the `clean:` section
 `	find . -type f -name '*.o' -delete`
 to clean up all subdirs
 
