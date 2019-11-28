@@ -20,7 +20,7 @@ The Port is a really ugly hack, was does not work:
 
 About the code, i wanted to get this quick up and running without changing to much, so i made some evil things...
 
-Its compiled as 64Bit, just put the kernel8.img, bootcode.bin, start.elf & fixup.dat in the root of the sd-card
+Its compiled as 64Bit, just put the kernel8.img, bootcode.bin, cmdline.txt, start.elf & fixup.dat in the root of the sd-card
 of your Raspi 3B(+) and off you go!
 
 The best way to build it is to get https://github.com/rsta2/minisynth
