@@ -124,6 +124,7 @@ ToDo:
   computer to transfer data is not so terrible....    
 
 - nicer GUI
+
   actually i find the usability very good for the limited amount of Buttons/Encoders and the editor is great,
   and changing this would take quite some time so this is not on the priority-list
 
