@@ -30,20 +30,23 @@ set in circle/Rules.mk
 ```
 AARCH	 ?= 64
 RASPPI	 ?= 3
-PREFIX	 ?= arm-eabi-
+PREFIX	 ?= doesent_care-
 PREFIX64 ?= /home/where/your/crosscompiler/lives/gcc-arm-8.3-2019.03-x86_64-aarch64-elf/bin/aarch64-elf-
 ```
 
 Change the Sounddevice in src/config.h
+
 `#define USE_I2S`
 
-and build it to make & test the framework,
+and build it to make & test the framework (it won't sound (HiFiBerry is not supported), just to test if its compiling
+with the library)
 the addon/fatfs must also be build.
 
 To Compile the RasPreenFM2
 
-in the minisynth directory 
-do `git clone https://github.com/styro2000/RasPreenFM2.git RasPreenFM2`  to get the Source
+in the minisynth directory do 
+
+`git clone https://github.com/styro2000/RasPreenFM2.git RasPreenFM2`  to get the Source
 
 i had to change line 63 in circle/Rules.mk to
 
