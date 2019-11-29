@@ -78,6 +78,7 @@ unsigned CSoundManager::GetChunk(u32 *pBuffer, unsigned nChunkSize)
 	// m_psynth->buildNewSampleBlock();
 	// m_psynth->buildNewSampleBlock();
 	out_led3.Set(0);
+
 	for (; nChunkSize > 0; nChunkSize -= 2) // fill the whole buffer
 	{
 //		out_led3.Invert();
@@ -87,9 +88,19 @@ unsigned CSoundManager::GetChunk(u32 *pBuffer, unsigned nChunkSize)
         m_right = m_psynth->rightSampleAtReadCursor();
         m_psynth->incReadCursor();
 
-		*pBuffer++ = (u32)m_left << 3;
-		*pBuffer++ = (u32)m_right << 3;
+		// *pBuffer++ = (u32)m_left * 64;
+		// *pBuffer++ = (u32)m_right * 64;
+		*pBuffer++ = (u32)m_left << 5;
+		*pBuffer++ = (u32)m_right << 5;
+		// if (alternate & 0x01){
+		// 	*pBuffer++ =  (1 << 23)-1;
+		// 	*pBuffer++ =  (1 << 23)-1;
+		// }else{
+		// 	*pBuffer++ = -(1 << 23)+1;
+		// 	*pBuffer++ = -(1 << 23)+1;
+		// }
 	}
+	alternate++;
 	// out_led2.Set(0);
 
 	return nResult;

@@ -92,7 +92,7 @@ Hexter             hexter;
 
 static const char FromKernel[] = "kernel";
 
-const char* ProgVersion = "RasPreenFM2 0.03c 32@48k " __DATE__ " " __TIME__;
+const char* ProgVersion = "RasPreenFM2 0.03d 32@48k " __DATE__ " " __TIME__;
 const char* line2 = "By styro2000";
 const char* line3 = "Based on PreenFM2";
 const char* line4 = "By Xavier Hosxe";
@@ -243,6 +243,7 @@ boolean CKernel::Initialize (void)
 
 	m_Logger.Write (FromKernel, LogNotice, "ProgVersion: %s", ProgVersion);
 	m_Logger.Write (FromKernel, LogNotice, "Compile time: " __DATE__ " " __TIME__);
+//	m_Logger.Write (FromKernel, LogNotice, "sizeof int %d: ", sizeof(int));
 
 
 	lcd.setCursor(1,1);
@@ -422,19 +423,19 @@ void CKernel::InitializeHiFiBerry(void){
 	m_I2CMaster.Write(0x4D,i2c_buffer,2);
 	m_Timer.SimpleusDelay(100);
 
-	// Stand-by request
+	// set Stand-by
 	i2c_buffer[0] = 0x02;
 	i2c_buffer[1] = 0x10;
 	m_I2CMaster.Write(0x4D,i2c_buffer,2);
 	m_Timer.SimpleusDelay(100);
 
-	// Stand-by request
+	// set Powerdown
 	i2c_buffer[0] = 0x02;
 	i2c_buffer[1] = 0x11;
 	m_I2CMaster.Write(0x4D,i2c_buffer,2);
 	m_Timer.SimpleusDelay(100);
 	
-	// Stand-by request
+	// Stand-by & Powerdown Release
 	i2c_buffer[0] = 0x02;
 	i2c_buffer[1] = 0x00;
 	m_I2CMaster.Write(0x4D,i2c_buffer,2);
@@ -446,11 +447,13 @@ void CKernel::InitializeHiFiBerry(void){
 	m_I2CMaster.Write(0x4D,i2c_buffer,2);
 	m_Timer.SimpleusDelay(100);
 
+	// GPIO4 Output Selection Register GPIO4 output (Page 0 / Register 86, bit 3)
 	i2c_buffer[0] = 83;
 	i2c_buffer[1] = 0x02;
 	m_I2CMaster.Write(0x4D,i2c_buffer,2);
 	m_Timer.SimpleusDelay(100);
 
+	// GPIO Output Control
 	i2c_buffer[0] = 86;
 	i2c_buffer[1] = 0x1C;
 	m_I2CMaster.Write(0x4D,i2c_buffer,2);

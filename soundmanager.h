@@ -88,7 +88,7 @@ private:
 	unsigned m_nPrevFrequency;
 	int 	m_left;
     int 	m_right;
-
+	u8	alternate=1;
 
 	Synth *m_psynth;
 

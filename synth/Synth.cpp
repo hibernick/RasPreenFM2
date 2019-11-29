@@ -190,7 +190,8 @@ void Synth::buildNewSampleBlock() {
 
     int *cb = &samples[writeCursor];
 
-    float toAdd = 131071.0f;
+    float toAdd = 131071.0f*16.0f;              // styro
+//    float toAdd = 131071.0f;
 //    for (int s = 0; s < 64/4; s++) {
     for (int s = 0; s < (BLOCK_SIZE*2)/4; s++) {
         *cb++ = (int)((*sampleFromTimbre1++ + *sampleFromTimbre2++ + *sampleFromTimbre3++ + *sampleFromTimbre4++) + toAdd);
