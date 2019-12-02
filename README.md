@@ -103,6 +103,8 @@ Other things i changed:
 
 - integrated the extra filters
 
+- made the Filter polyphonic (Filter per Voice) instead paraphonic (Filter per Timbre)
+
 - changed the glide-times to longer
 
 - some checks reading the settings values and prevent loading DX7-Patches > 31 over MIDI ProgramChange
