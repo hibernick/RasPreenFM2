@@ -33,6 +33,10 @@
 // #include "core_cmInstr.h"
 #include "note_stack.h"
 #include "event_scheduler.h"
+#include <math.h>
+
+
+
 
 
 extern float panTable[];
@@ -215,8 +219,8 @@ private:
     uint8_t recording_;
     // Low pass filter
     float fxParam1, fxParam2, fxParam3;
-    float v0L, v1L, v2L, v3L, v4L, v5L, v6L, v7L;
-    float v0R, v1R, v2R, v3R, v4R, v5R, v6R, v7R;
+    float v0L, v1L, v2L, v3L, v4L, v5L, v6L, v7L, v8L;;
+    float v0R, v1R, v2R, v3R, v4R, v5R, v6R, v7R, v8R;;
    	float fxParamA1, fxParamA2, fxParamB1, fxParamB2;
     float fxPhase;
     // save float fxParam1 to detect modification

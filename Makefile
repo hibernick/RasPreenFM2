@@ -12,7 +12,7 @@ CPPFLAGS += -Wno-write-strings
 INCLUDE	+= -I./third/   -I./utils/ -I./filesystem -I./hardware -I./usb -I./synth -I./midi -I./midipal -I./
 
 OBJS	= main.o kernel.o serial_irq.o screenx.o serialmidi.o soundmanager.o \
-	  global_obj.o 	utils/RingBuffer.o \
+	  global_obj.o utils/RingBuffer.o \
 	usb/usbKey_usr.o \
 	utils/Hexter.o \
 	hardware/LiquidCrystal.o \

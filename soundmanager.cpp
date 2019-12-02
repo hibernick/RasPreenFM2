@@ -77,7 +77,6 @@ unsigned CSoundManager::GetChunk(u32 *pBuffer, unsigned nChunkSize)
 //	m_psynth->buildNewSampleBlock();
 	// m_psynth->buildNewSampleBlock();
 	// m_psynth->buildNewSampleBlock();
-	out_led3.Set(0);
 
 	for (; nChunkSize > 0; nChunkSize -= 2) // fill the whole buffer
 	{
@@ -101,6 +100,7 @@ unsigned CSoundManager::GetChunk(u32 *pBuffer, unsigned nChunkSize)
 		// }
 	}
 	alternate++;
+	out_led3.Set(0);
 	// out_led2.Set(0);
 
 	return nResult;

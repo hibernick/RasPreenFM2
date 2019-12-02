@@ -92,7 +92,7 @@ Hexter             hexter;
 
 static const char FromKernel[] = "kernel";
 
-const char* ProgVersion = "RasPreenFM2 0.03d 32@48k " __DATE__ " " __TIME__;
+const char* ProgVersion = "RasPreenFM2 0.04a 32@48k " __DATE__ " " __TIME__;
 const char* line2 = "By styro2000";
 const char* line3 = "Based on PreenFM2";
 const char* line4 = "By Xavier Hosxe";
@@ -182,7 +182,8 @@ boolean CKernel::Initialize (void)
 	Statusx = m_Screen.GetStatus();
 
 	TScreenColor BGColor = 0x0088;
-	TScreenColor Color = 0x4282;
+//	TScreenColor Color = 0x4282;
+	TScreenColor Color = 0x4F82;
 
 	Statusx.Color      = Color;
 	Statusx.BGColor    = BGColor;
@@ -367,9 +368,9 @@ TShutdownMode CKernel::Run (void)
 		}
 		if ((newPreenTimer - encoderTimer) > 60) {
 			ButtonEncoderRegister = (uint16_t)ReadInputMAX6957();
-		  	out_led2.Set(1);
+//		  	out_led2.Set(1);
 			encoders.checkStatus(synthState.fullState.midiConfigValue[MIDICONFIG_ENCODER]);
- 			out_led2.Set(0);
+// 			out_led2.Set(0);
 			encoderTimer = newPreenTimer;
 		} else if (fmDisplay.needRefresh()) {
 			fmDisplay.refreshAllScreenByStep();

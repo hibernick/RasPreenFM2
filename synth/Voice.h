@@ -51,13 +51,16 @@ public:
     bool isPlaying() { return this->playing; }
     bool isNewNotePending() { return this->newNotePending; }
     unsigned int getIndex() { return this->index; }
+    float getVelocity() { return this->velocity; }
     char getNote() { return this->note; }
     uint32_t getPlayingTime() { return this->PlayingTime; }
     char getNextPendingNote() { return this->nextPendingNote; }
     char getNextGlidingNote() { return this->nextGlidingNote; }
     bool isHoldedByPedal() { return this->holdedByPedal; }
     void setHoldedByPedal(bool holded) { this->holdedByPedal = holded; }
-    void setCurrentTimbre(Timbre *timbre);    bool isGliding() { return gliding; }
+    void setCurrentTimbre(Timbre *timbre);    
+    bool isGliding() { return gliding; }
+    void applyFilter(void);
 
     void updateAllModulationIndexes() {
         int numberOfIMs = algoInformation[(int)(currentTimbre->getParamRaw()->engine1.algo)].im;
@@ -347,6 +350,37 @@ public:
         }
     }
 
+    void setfxParam1(float fxParam1){
+        this->fxParam1 = fxParam1;
+    }
+    void setfxParam2(float fxParam2){
+        this->fxParam2 = fxParam2;
+    }
+    void setfxParam3(float fxParam3){
+        this->fxParam3 = fxParam3;
+    }
+    void setfxfxParamA1(float fxParamA1){
+        this->fxParamA1 = fxParamA1;
+    }
+    void setfxParamA2(float fxParamA2){
+        this->fxParamA2 = fxParamA2;
+    }
+    void setfxParamB1(float fxParamB1){
+        this->fxParamB1 = fxParamB1;
+    }
+    void setfxParamB2(float fxParamB2){
+        this->fxParamB2 = fxParamB2;
+    }
+
+    void setfxParam1PlusMatrix(float fxParam1PlusMatrix){
+        this->fxParam1PlusMatrix = fxParam1PlusMatrix;
+    }
+
+    void resetfxCoefficents(void){
+   		v0L = v1L = v2L = v3L = v4L = v5L = v6L = v7L = v8L = v0R = v1R = v2R = v3R = v4R = v5R = v6R = v7R = v8R = 0.0f;
+    }
+
+    void recomputeBPValues(float q, float fSquare );
 
 private:
     // voice status
@@ -401,10 +435,12 @@ private:
     float env6ValueMem;
 
     Timbre* currentTimbre;
+    float ratioTimbres = 131072.0f * 1.0f;
+    float mixerGain = 1.0f;
 
     // glide phase increment
     static float glidePhaseInc[10];
-
+    float VoiceSampleBlock[BLOCK_SIZE * 2];
 
     // Matrix....
     Matrix matrix;
@@ -420,6 +456,18 @@ private:
     LfoEnv lfoEnv[NUMBER_OF_LFO_ENV];
     LfoEnv2 lfoEnv2[NUMBER_OF_LFO_ENV2];
     LfoStepSeq lfoStepSeq[NUMBER_OF_LFO_STEP];
+
+    // Filter 
+
+    float fxParam1, fxParam2, fxParam3;
+    float v0L, v1L, v2L, v3L, v4L, v5L, v6L, v7L, v8L;
+    float v0R, v1R, v2R, v3R, v4R, v5R, v6R, v7R, v8R;
+   	float fxParamA1, fxParamA2, fxParamB1, fxParamB2;
+    float fxPhase;
+    // save float fxParam1 to detect modification
+    float fxParam1PlusMatrix;
+
+    float old_param1=0.0f;
 
 
 };

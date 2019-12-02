@@ -298,10 +298,17 @@ enum FILTER_TYPE {
     FILTER_AP4B,
     FILTER_AP4D,
     FILTER_ORYX,
+    FILTER_ORYX2,
+    FILTER_ORYX3,
+    FILTER_18DB,
     FILTER_LADDER,
     FILTER_LADDER2,
+    FILTER_DIOD,
+    FILTER_KRMG,
+    FILTER_TEEBEE,
     FILTER_LAST
 };
+
 
 // Display information
 struct FilterRowDisplay {

@@ -159,9 +159,9 @@ void LfoOsc::midiClock(int songPosition, bool computeStep) {
 
 
 void LfoOsc::nextValueInMatrix() {
-   float lfoValue;
+    float lfoValue;
 
-   ticks ++;
+    ticks ++;
 
     if (this->isNotMidiSynchronized) {
         currentFreq = lfo->freq + this->matrix->getDestination(destination);
@@ -225,7 +225,7 @@ void LfoOsc::nextValueInMatrix() {
 
     lfoValue += lfo->bias;
 
-   matrix->setSource((enum SourceEnum)source, lfoValue);
+    matrix->setSource((enum SourceEnum)source, lfoValue);
 }
 
 
