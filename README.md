@@ -101,23 +101,25 @@ Other things i changed:
 
 - The ComboName is memorized on load/save and used as default for saving 
 
+- changed the glide-times to longer
+
 - integrated the extra filters
 
 - made the Filter polyphonic (Filter per Voice) instead paraphonic (Filter per Timbre)
 
-- changed the glide-times to longer
-
 - some checks reading the settings values and prevent loading DX7-Patches > 31 over MIDI ProgramChange
   that would crash the Raspreen.
+
+- put Polyphony to 20 and Operators to 120 (takes about 100us to calculate on full load, ca 35% of the 
+  Sound-DMA IRQ Rate)
+
+
 
 known Bugz:
 - sometimes it ignores a note, no idea what it could be, will take probably long to figure out, till then
   it goes as "mandatory humanize"-function :-)   
 
 ToDo:
-- More Polyphony and Operators :-)
-  the RaspberryPi is quite powerful and the load with 4Timbres à 2Voices with 6 Operators + Filters is about 15%
-  of the SoundDevice Interrupt so this should be doable when i understand how to do it....
 
 - usb-midi
 

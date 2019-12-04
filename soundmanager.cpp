@@ -74,34 +74,31 @@ unsigned CSoundManager::GetChunk(u32 *pBuffer, unsigned nChunkSize)
 
  	out_led3.Set(1);
 	m_psynth->buildNewSampleBlock();
-//	m_psynth->buildNewSampleBlock();
-	// m_psynth->buildNewSampleBlock();
-	// m_psynth->buildNewSampleBlock();
 
 	for (; nChunkSize > 0; nChunkSize -= 2) // fill the whole buffer
 	{
-//		out_led3.Invert();
         preenTimer += 1;
 
-        m_left = m_psynth->leftSampleAtReadCursor();
-        m_right = m_psynth->rightSampleAtReadCursor();
+        m_left = m_psynth->leftSampleAtReadCursor() <<6;
+        m_right = m_psynth->rightSampleAtReadCursor() <<6;
         m_psynth->incReadCursor();
 
-		if (m_left > (1 << 17)-1){						// clamp to prevent nasty wrap arounds
-			m_left = (1 << 17)-1;
-		}
-		if (m_left < -(1 << 17)+1){
-			m_left = -(1 << 17)+1;
-		}
-		if (m_right > (1 << 17)-1){
-			m_right = (1 << 17)-1;
-		}
-		if (m_right < -(1 << 17)+1){
-			m_right = -(1 << 17)+1;
-		}
-		*pBuffer++ = (u32)m_left << 6;
-		*pBuffer++ = (u32)m_right << 6;
 
+		if (m_left > (1 << 23)-1){						// clamp to prevent nasty wrap arounds
+			m_left = (1 << 23)-1;
+		}
+		if (m_left < -(1 << 23)+1){
+			m_left = -(1 << 23)+1;
+		}
+		if (m_right > (1 << 23)-1){
+			m_right = (1 << 23)-1;
+		}
+		if (m_right < -(1 << 23)+1){
+			m_right = -(1 << 23)+1;
+		}
+
+		*pBuffer++ = (u32)m_left;
+		*pBuffer++ = (u32)m_right;
 		// if (alternate & 0x01){						// Max Output Test
 		// 	*pBuffer++ =  (1 << 23)-1;
 		// 	*pBuffer++ =  (1 << 23)-1;
@@ -112,7 +109,6 @@ unsigned CSoundManager::GetChunk(u32 *pBuffer, unsigned nChunkSize)
 	}
 	alternate++;
 	out_led3.Set(0);
-	// out_led2.Set(0);
 
 	return nResult;
 }
