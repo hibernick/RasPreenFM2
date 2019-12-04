@@ -751,7 +751,7 @@ void Timbre::setSeqStepValue(int whichStepSeq, int step, int value) {
 void Timbre::setNewEffecParam(int encoder) {
 	int iNov = (int) params.engine1.numberOfVoice;
 	if (encoder == 0) {
-   		v0L = v1L = v2L = v3L = v4L = v5L = v6L = v7L = v0R = v1R = v2R = v3R = v4R = v5R = v6R = v7R = 0.0f;
+   		v0L = v1L = v2L = v3L = v4L = v5L = v6L = v7L = v8L = v0R = v1R = v2R = v3R = v4R = v5R = v6R = v7R = v8R = 0.0f;
 		for (int k = 0; k < iNov; k++) {
 			// voice number k of timbre
 			int n = voiceNumber[k];

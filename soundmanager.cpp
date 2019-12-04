@@ -87,11 +87,22 @@ unsigned CSoundManager::GetChunk(u32 *pBuffer, unsigned nChunkSize)
         m_right = m_psynth->rightSampleAtReadCursor();
         m_psynth->incReadCursor();
 
-		// *pBuffer++ = (u32)m_left * 64;
-		// *pBuffer++ = (u32)m_right * 64;
-		*pBuffer++ = (u32)m_left << 5;
-		*pBuffer++ = (u32)m_right << 5;
-		// if (alternate & 0x01){
+		if (m_left > (1 << 17)-1){						// clamp to prevent nasty wrap arounds
+			m_left = (1 << 17)-1;
+		}
+		if (m_left < -(1 << 17)+1){
+			m_left = -(1 << 17)+1;
+		}
+		if (m_right > (1 << 17)-1){
+			m_right = (1 << 17)-1;
+		}
+		if (m_right < -(1 << 17)+1){
+			m_right = -(1 << 17)+1;
+		}
+		*pBuffer++ = (u32)m_left << 6;
+		*pBuffer++ = (u32)m_right << 6;
+
+		// if (alternate & 0x01){						// Max Output Test
 		// 	*pBuffer++ =  (1 << 23)-1;
 		// 	*pBuffer++ =  (1 << 23)-1;
 		// }else{
