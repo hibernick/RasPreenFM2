@@ -110,8 +110,8 @@ Other things i changed:
 - some checks reading the settings values and prevent loading DX7-Patches > 31 over MIDI ProgramChange
   that would crash the Raspreen.
 
-- put Polyphony to 20 and Operators to 120 (takes about 100us to calculate on full load, ca 35% of the 
-  Sound-DMA IRQ Rate)
+- put Polyphony to 20 and Operators to 120 (takes about 160us to calculate on full load with Filter h3o+ on Voice, ca 45% of the 
+  Sound-DMA IRQ Rate of 333uS, with Filter LP it takes about 120uS)
 
 
 
