@@ -103,7 +103,7 @@ Other things i changed:
 
 - changed the glide-times to longer
 
-- integrated the extra filters
+- integrated the extra filters (thanks to Toltekradiation!)
 
 - made the Filter polyphonic (Filter per Voice) instead paraphonic (Filter per Timbre)
 
