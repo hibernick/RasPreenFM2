@@ -92,6 +92,28 @@ Other things i changed:
     for (int k=0; k<BLOCK_SIZE; ) {
   seemed to help
 
+  the Circle-framework has to be changed at lib/i2ssoundbasedevice.cpp accordingly to 
+  https://www.raspberrypi.org/forums/viewtopic.php?f=72&t=90130&sid=977ea3a6593937475847a5a61421587e&start=225#p1568424 
+
+```
+  @@ -71,6 +71,9 @@
+  #define TXC_A_CH2POS__SHIFT	4
+  #define TXC_A_CH2WID__SHIFT	0
+  
+  +#define DREQ_A_TX__SHIFT	8
+  +#define DREQ_A_TX__MASK		(0x7F << 8)
+  +
+  @@ -263,6 +266,8 @@ boolean CI2SSoundBaseDevice::Start (void)
+  
+    // enable I2S DMA operation
+    PeripheralEntry ();
+  +	write32 (ARM_PCM_DREQ_A,   (read32 (ARM_PCM_DREQ_A) & ~DREQ_A_TX__MASK)
+  +				 | (0x18 << DREQ_A_TX__SHIFT));
+    write32 (ARM_PCM_CS_A, read32 (ARM_PCM_CS_A) | CS_A_DMAEN);
+    PeripheralExit ();
+```
+
+
 - the BPM/LFO/Env/ARP/etc internal clock changed to match the smaller BLOCKSIZE
 
 - the Operators start a 0°, didn't like the Click to much at 90° 
