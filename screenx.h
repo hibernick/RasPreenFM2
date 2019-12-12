@@ -211,7 +211,7 @@ private:
 	unsigned	 m_nParam2;
 	boolean		 m_bUpdated;
 	boolean		 m_bBigMode=0;
-	boolean		 m_bFlipMode=0;
+	boolean		 m_bFlipMode=1;
 
 	CustomChar   CustomChars[10];
 

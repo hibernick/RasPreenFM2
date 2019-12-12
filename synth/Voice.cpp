@@ -7024,11 +7024,11 @@ void Voice::setCurrentTimbre(Timbre *timbre) {
         lfoStepSeq[k].init(stepseqparams[k], stepseqs[k], &matrix, (SourceEnum)(MATRIX_SOURCE_LFOSEQ1+k), (DestinationEnum)(LFOSEQ1_GATE+k));
     }
 
-	for (int j=0; j<NUMBER_OF_ENCODERS; j++) {					// styro update LFOs after Voice Count change bug
-		this->lfoOsc[0].valueChanged(j);						// without this the freq of the LFOs of the new allocated Voices
-		this->lfoOsc[1].valueChanged(j);						// wasent set (was 0)
-		this->lfoOsc[2].valueChanged(j);						// actually i dont really know why this works.....
-	}
+	// for (int j=0; j<NUMBER_OF_ENCODERS; j++) {					// styro update LFOs after Voice Count change bug
+	// 	this->lfoOsc[0].valueChanged(j);						// without this the freq of the LFOs of the new allocated Voices
+	// 	this->lfoOsc[1].valueChanged(j);						// wasent set (was 0)
+	// 	this->lfoOsc[2].valueChanged(j);						// actually i dont really know why this works.....
+	// }
 
 	resetfxCoefficents();
 	setfxParam1PlusMatrix(-1.0f);

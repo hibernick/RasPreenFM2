@@ -45,9 +45,9 @@ struct usbCommandParam commandParams;
 
 
 void displayFileError(const char* msg) {
-/*    lcd.clear();
+    lcd.clear();
     lcd.setCursor(0,1);
-    lcd.print(msg);*/
+    lcd.print(msg);
     while (true);
 }
 
@@ -60,7 +60,7 @@ int USB_Storage_Command(void) {
     switch (commandParams.commandState) {
     case COMMAND_INIT:
 	    if (f_mount (&fatfs, DRIVE, 1) != FR_OK){
-            displayFileError("MOUNT ERROR");
+            displayFileError("MOUNT ERROR, USB-Stick Not Found\n Please insert and Reboot!");
         }
         commandParams.commandState = COMMAND_NONE;
         commandParams.commandResult = COMMAND_SUCCESS;
@@ -202,8 +202,8 @@ int USB_Storage_Command(void) {
  * @retval None
  */
 void Fail_Handler(const char*msg) {
-	// lcd.setCursor(0, 0);
-	// lcd.print(msg);
+    lcd.setCursor(0, 0);
+	lcd.print(msg);
 	while (1) {	}
 }
 

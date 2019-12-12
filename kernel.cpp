@@ -92,7 +92,7 @@ Hexter             hexter;
 
 static const char FromKernel[] = "kernel";
 
-const char* ProgVersion = "RasPreenFM2 0.04c 32@48k " __DATE__ " " __TIME__;
+const char* ProgVersion = "RasPreenFM2 0.04d 32@48k " __DATE__ " " __TIME__;
 const char* line2 = "By styro2000";
 const char* line3 = "Based on PreenFM2";
 const char* line4 = "By Xavier Hosxe";
@@ -168,6 +168,7 @@ boolean CKernel::Initialize (void)
 	if (bOK)
 	{
 		bOK = m_SPIMaster.Initialize ();
+		InitializeMAX6957();
 	}
 
 
@@ -190,6 +191,16 @@ boolean CKernel::Initialize (void)
 	m_Screen.SetStatus(Statusx);
 	lcd.clear();
 	lcd.home();
+
+	uint16_t testonBootloader=0;
+
+	testonBootloader=ReadInputMAX6957();
+	testonBootloader=ReadInputMAX6957();
+	if ((testonBootloader & 0xFF) != 0xFF){					// Bootloader
+		m_Logger.Write (FromKernel, LogNotice, "Bootloader");
+		m_Timer.SimpleMsDelay(2000);
+	}
+
 
 
 
@@ -309,7 +320,6 @@ boolean CKernel::Initialize (void)
 
 	encoders.setButtonRegister(&ButtonEncoderRegister);
 	InitializeHiFiBerry();
-	 InitializeMAX6957();
 
 	return bOK;
 }
