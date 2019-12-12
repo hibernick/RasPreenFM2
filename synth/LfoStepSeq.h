@@ -42,6 +42,7 @@ private:
     int target;
     int currentValue;
     bool gated;
+    int resetstep=21;			// if higher then 20 -> 16 steps
     DestinationEnum matrixGateDestination;
 };
 

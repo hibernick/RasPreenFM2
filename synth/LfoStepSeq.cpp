@@ -46,7 +46,14 @@ void LfoStepSeq::midiClock(int songPosition, bool computeStep) {
                 phaseStep = 0.5f * invTab[ticks];
                 ticks = 0;
 			}
-            phase = (float)(songPosition & 0x3f) * .25f;
+			if (resetstep > 20){
+				phase = (float)(songPosition & 0x3f) * .25f;
+			}else{
+				if (resetstep < 1)
+					resetstep=1;
+				phase = (songPosition % (resetstep*4))  * .25f;
+			}
+ //           phase = (float)(songPosition & 0x3f) * .25f;
 		}
 		break;
 	case LFO_SEQ_MIDICLOCK_DIV_2:
@@ -55,7 +62,14 @@ void LfoStepSeq::midiClock(int songPosition, bool computeStep) {
                 phaseStep = 1.0f * invTab[ticks];
 				ticks = 0;
 			}
-			phase = (float)(songPosition & 0x1f) * .5f;
+			if (resetstep > 20){
+				phase = (float)(songPosition & 0x1f) * .5f;
+			}else{
+				if (resetstep < 1)
+					resetstep=1;
+				phase = (songPosition % (resetstep*2))  * .5f;
+			}
+//			phase = (float)(songPosition & 0x1f) * .5f;
 		}
 		break;
 	case LFO_SEQ_MIDICLOCK:
@@ -66,7 +80,13 @@ void LfoStepSeq::midiClock(int songPosition, bool computeStep) {
                 phaseStep = 2.0f * invTab[ticks];
 				ticks = 0;
 			}
-			phase = (songPosition & 0xF);
+			if (resetstep > 20){
+				phase = (float)(songPosition & 0xF);
+			}else{
+				if (resetstep < 1)
+					resetstep=1;
+				phase = (float)(songPosition % (resetstep));
+			}
 		}
 		break;
 	case LFO_SEQ_MIDICLOCK_TIME_2:
@@ -75,7 +95,14 @@ void LfoStepSeq::midiClock(int songPosition, bool computeStep) {
                 phaseStep = 4.0f * invTab[ticks];
 				ticks = 0;
 			}
-			phase = ((songPosition << 1) & 0xF);
+			if (resetstep > 20){
+				phase = (float)((songPosition << 1) & 0xF);
+			}else{
+				if (resetstep < 1)
+					resetstep=1;
+				phase = (float)((songPosition << 1) % (resetstep));
+			}
+//			phase = ((songPosition << 1) & 0xF);
 		}
 		break;
 	case LFO_SEQ_MIDICLOCK_TIME_4:
@@ -84,7 +111,14 @@ void LfoStepSeq::midiClock(int songPosition, bool computeStep) {
                 phaseStep = 8.0f * invTab[ticks];
 				ticks = 0;
 			}
-            phase = ((songPosition << 1) & 0xF);
+			if (resetstep > 20){
+				phase = (float)((songPosition << 1) & 0xF);
+			}else{
+				if (resetstep < 1)
+					resetstep=1;
+				phase = (float)((songPosition << 1) % (resetstep));
+			}
+//            phase = ((songPosition << 1) & 0xF);
 		}
 		break;
 	}
@@ -100,6 +134,13 @@ void LfoStepSeq::valueChanged(int encoder) {
 			phaseStep = seqParams->bpm * 0.066666666666666f * PREENFM_FREQUENCY_INVERSED_LFO;
 		}
 	}
+	for (int i=0; i< 16; i++){
+		if (seqSteps->steps[i] > 15){
+			resetstep = i;
+			return;
+		}
+	}
+	resetstep = 21;
 }
 
 void LfoStepSeq::nextValueInMatrix() {
@@ -110,8 +151,19 @@ void LfoStepSeq::nextValueInMatrix() {
 	int phaseInteger = phase;
 	phase -= phaseInteger;
 	float phaseDecimal = phase;
-	phaseInteger &= 0xf; // modulo 16
+	if (resetstep > 20){
+			phaseInteger &= 0xf; // modulo 16
+	}else{
+		if (resetstep < 1)
+			resetstep=1;
+		phaseInteger = phaseInteger % resetstep;
+	}
+//	phaseInteger &= 0xf; // modulo 16
 	phase += phaseInteger;
+
+	if ((int)phase >= resetstep){
+		phase = 0.0f;
+	}
 
 	// Add gate and matrix value
 	float gatePlusMatrix = seqParams->gate + (this->matrix->getDestination(matrixGateDestination));

@@ -135,7 +135,8 @@ Other things i changed:
 - put Polyphony to 20 and Operators to 120 (takes about 160us to calculate on full load with Filter h3o+ on Voice, ca 45% of the 
   Sound-DMA IRQ Rate of 333uS, with Filter LP it takes about 120uS)
 
-
+- the length of the Stepsequencers can be set from 2-16 steps (value 1 over F on the reset-step)
+ 
 
 known Bugz:
 - sometimes it ignores a note, no idea what it could be, will take probably long to figure out, till then

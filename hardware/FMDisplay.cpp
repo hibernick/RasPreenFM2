@@ -106,14 +106,14 @@ void FMDisplay::customCharsInit() {
     };
 
     unsigned char stepPos[8] = {
-            0b00000,
-            0b00000,
-            0b00000,
-            0b00000,
-            0b00000,
-            0b00100,
-            0b00100,
-            0b00000,
+            0b00000000,
+            0b00000000,
+            0b00000000,
+            0b00000000,
+            0b00000000,
+            0b10000000,
+            0b10000000,
+            0b00000000
     };
 
     unsigned char firstSteps[8] = {
@@ -129,14 +129,14 @@ void FMDisplay::customCharsInit() {
 
 
     unsigned char thirdStep[8] = {
-            0b00000,
-            0b00000,
-            0b00000,
-            0b00000,
-            0b00000,
-            0b00000,
-            0b10100,
-            0b10100,
+            0b0000000,
+            0b0000000,
+            0b0000000,
+            0b0000000,
+            0b0000000,
+            0b0000000,
+            0b1010000,
+            0b1010000,
     };
 
     unsigned char note[8] = {

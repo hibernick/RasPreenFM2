@@ -572,6 +572,7 @@ void SynthState::encoderTurnedForStepSequencer(int row, int encoder, int ticks) 
             stepSelect[whichStepSeq] = 15;
         }
 
+
         propagateNewParamValue(currentTimbre, row, encoder, (ParameterDisplay*)NULL, oldPos, stepSelect[whichStepSeq]);
 
     } else if (encoder == 3) {
@@ -579,11 +580,18 @@ void SynthState::encoderTurnedForStepSequencer(int row, int encoder, int ticks) 
         int oldValue = (int)(*step);
 
         (*step) += ticks;
-
-        if ((*step)>15) {
-            (*step) = 15;
-        } else if ((*step)<0) {
-            (*step) = 0;
+        if (stepSelect[whichStepSeq] == 0){
+            if ((*step)>15) {
+                (*step) = 15;
+            } else if ((*step)<0) {
+                (*step) = 0;
+            }
+        }else{
+            if ((*step)>16) {                   // styro if stepvalue == 16 reset -> for seq < 16 steps
+                (*step) = 16;
+            } else if ((*step)<0) {
+                (*step) = 0;
+            }
         }
 
         propagateNewParamValue(currentTimbre, row, encoder, (ParameterDisplay*)NULL, oldValue, (int)(*step));
