@@ -177,6 +177,7 @@ struct ParameterRowDisplay effectParameterRow = {
                 {0, 1, 101, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder },
                 {0, 1, 101, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder },
                 {0, 2, 201, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder }
+//                {0, 4, 201, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder }             //  styro More Gain
         }
 };
 
@@ -298,10 +299,17 @@ struct ParameterRowDisplay lfoEnv2ParameterRow = {
         }
 };
 
+// const char* matrixSourceNames [] = { "None", "lfo1", "lfo2", "lfo3", "env1", "env2", "seq1", "seq2",
+//         "ModW", "PitB", "AftT",  "Velo", "Not1", "p1  ", "p2  ", "p3  ", "p4  ", "Not2", "Brth"} ;
+// const unsigned char  matrixSourceOrder[] =        { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 13, 14, 15, 16};
+// const unsigned char  matrixSourcePosition[] =     { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 13, 14};
+
+// styro changes for unipolar performance Source and constant value 1
+
 const char* matrixSourceNames [] = { "None", "lfo1", "lfo2", "lfo3", "env1", "env2", "seq1", "seq2",
-        "ModW", "PitB", "AftT",  "Velo", "Not1", "p1  ", "p2  ", "p3  ", "p4  ", "Not2", "Brth" } ;
-const unsigned char  matrixSourceOrder[] =        { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 13, 14, 15, 16 };
-const unsigned char  matrixSourcePosition[] =     { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 13, 14};
+        "ModW", "PitB", "AftT",  "Velo", "Not1", "p1  ", "p2  ", "p3  ", "p4  ", "Not2", "Brth", "p1u ", "p2u ", "p3u ", "p4u ", "cnst" } ;
+const unsigned char  matrixSourceOrder[] =        { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 13, 14, 15, 16, 19, 20, 21, 22, 23};
+const unsigned char  matrixSourcePosition[] =     { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 13, 14, 19, 20, 21, 22, 23};
 
 
 const char* matrixDestNames [] = {

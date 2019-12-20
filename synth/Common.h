@@ -467,6 +467,11 @@ enum SourceEnum {
     MATRIX_SOURCE_CC4,
     MATRIX_SOURCE_NOTE2,
     MATRIX_SOURCE_BREATH,
+    MATRIX_SOURCE_CC1U,                                 // styro Unipolar scaled Performance Ctlr  
+    MATRIX_SOURCE_CC2U,
+    MATRIX_SOURCE_CC3U,
+    MATRIX_SOURCE_CC4U,
+    MATRIX_SOURCE_CONSTANT,                             // styro Constant = 1.0  
     MATRIX_SOURCE_MAX
 };
 

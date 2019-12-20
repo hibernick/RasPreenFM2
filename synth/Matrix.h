@@ -37,6 +37,7 @@ public:
         for (int k=0; k< MATRIX_SOURCE_MAX; k++) {
         	setSource((SourceEnum)k, 0);
         }
+        setSource(MATRIX_SOURCE_CONSTANT, 1.0f);                        // styro set Constant to 1.0
 	}
 
     void resetAllDestination() {
@@ -119,6 +120,10 @@ public:
 
     void setSource(SourceEnum source, float value) __attribute__((always_inline)) {
         this->sources[source] = value;
+        if (unlikely ((source >= MATRIX_SOURCE_CC1) && (source <= MATRIX_SOURCE_CC4))){     // styro unipolar Source derived from the 
+            int knob = source - MATRIX_SOURCE_CC1;                                          // performance controllers
+            this->sources[MATRIX_SOURCE_CC1U + knob] = (value + 1.0f) / 2.0f;           
+        }
     }
 
     float getDestination(DestinationEnum destination)   __attribute__((always_inline))  {

@@ -92,7 +92,7 @@ Hexter             hexter;
 
 static const char FromKernel[] = "kernel";
 
-const char* ProgVersion = "RasPreenFM2 0.04e 32@48k " __DATE__ " " __TIME__;
+const char* ProgVersion = "RasPreenFM2 0.04f 32@48k " __DATE__ " " __TIME__;
 const char* line2 = "By styro2000";
 const char* line3 = "Based on PreenFM2";
 const char* line4 = "By Xavier Hosxe";
@@ -106,7 +106,8 @@ CKernel::CKernel (void)
 	m_Timer (&m_Interrupt),
 	m_Logger (m_Options.GetLogLevel (), &m_Timer),
 	m_USBHCI (&m_Interrupt, &m_Timer),
-	m_SerialMIDI (&m_Soundmanager,&m_Interrupt,FALSE),
+//	m_SerialMIDI (&m_Soundmanager,&m_Interrupt,FALSE),
+	m_SerialMIDI (&m_Soundmanager,&m_Interrupt,TRUE),
 //	m_DWHCI (&m_Interrupt, &m_Timer),
 	m_I2CMaster (CMachineInfo::Get ()->GetDevice (DeviceI2CMaster)),
 	m_SPIMaster (SPI_CLOCK_SPEED, SPI_CPOL, SPI_CPHA),

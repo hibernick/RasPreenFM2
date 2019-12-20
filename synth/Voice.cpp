@@ -3632,7 +3632,7 @@ void Voice::applyFilter(void){
 
     // LP Algo
     int effectType = currentTimbre->getParamRaw()->effect.type;
-    float gainTmp =  currentTimbre->getParamRaw()->effect.param3;
+//    float gainTmp =  currentTimbre->getParamRaw()->effect.param3;
     // float mixerGain = 0.02f * gainTmp + .98f  * mixerGain;
 	// fxParam2 = 0.27f -  currentTimbre->getParamRaw()->effect.param2 * 0.27f;
 
@@ -7029,6 +7029,35 @@ void Voice::setCurrentTimbre(Timbre *timbre) {
 	// 	this->lfoOsc[1].valueChanged(j);						// wasent set (was 0)
 	// 	this->lfoOsc[2].valueChanged(j);						// actually i dont really know why this works.....
 	// }
+
+	float value;
+
+	value =	timbre->getParamRaw()->performance1.perf1;
+	this->matrix.setSource(MATRIX_SOURCE_CC1,value);
+	this->matrix.setSource(MATRIX_SOURCE_CC1U,(value + 1.0f) / 2.0f);
+	value =	timbre->getParamRaw()->performance1.perf2;
+	this->matrix.setSource(MATRIX_SOURCE_CC2,value);
+	this->matrix.setSource(MATRIX_SOURCE_CC2U,(value + 1.0f) / 2.0f);
+	value =	timbre->getParamRaw()->performance1.perf3;
+	this->matrix.setSource(MATRIX_SOURCE_CC3,value);
+	this->matrix.setSource(MATRIX_SOURCE_CC3U,(value + 1.0f) / 2.0f);
+	value =	timbre->getParamRaw()->performance1.perf4;
+	this->matrix.setSource(MATRIX_SOURCE_CC4,value);
+	this->matrix.setSource(MATRIX_SOURCE_CC4U,(value + 1.0f) / 2.0f);
+	this->matrix.setSource(MATRIX_SOURCE_CONSTANT,1.0f);
+
+//	this->matrix.setSource(MATRIX_SOURCE_CC1,1.0f);
+//     num = encoder + ROW_PERFORMANCE1 * NUMBER_OF_ENCODERS;
+// //    &value = ((float*)synthState->params)[num];
+// 	this->matrix.setSource(MATRIX_SOURCE_CC2,value);
+// 	encoder = 2;
+//     num = encoder + ROW_PERFORMANCE1 * NUMBER_OF_ENCODERS;
+// //    &value = ((float*)synthState->params)[num];
+// 	this->matrix.setSource(MATRIX_SOURCE_CC3,value);
+// 	encoder = 3;
+//     num = encoder + ROW_PERFORMANCE1 * NUMBER_OF_ENCODERS;
+// //    &value = ((float*)synthState->params)[num];
+// 	this->matrix.setSource(MATRIX_SOURCE_CC4,value);
 
 	resetfxCoefficents();
 	setfxParam1PlusMatrix(-1.0f);

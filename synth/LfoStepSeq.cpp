@@ -46,14 +46,14 @@ void LfoStepSeq::midiClock(int songPosition, bool computeStep) {
                 phaseStep = 0.5f * invTab[ticks];
                 ticks = 0;
 			}
-			if (resetstep > 20){
+			if (resetstep > 20){								//styro if resetstep > 20  -> 16 step seq
 				phase = (float)(songPosition & 0x3f) * .25f;
 			}else{
 				if (resetstep < 1)
 					resetstep=1;
 				phase = (songPosition % (resetstep*4))  * .25f;
 			}
- //           phase = (float)(songPosition & 0x3f) * .25f;
+ //           phase = (float)(songPosition & 0x3f) * .25f;		// original
 		}
 		break;
 	case LFO_SEQ_MIDICLOCK_DIV_2:
@@ -134,7 +134,7 @@ void LfoStepSeq::valueChanged(int encoder) {
 			phaseStep = seqParams->bpm * 0.066666666666666f * PREENFM_FREQUENCY_INVERSED_LFO;
 		}
 	}
-	for (int i=0; i< 16; i++){
+	for (int i=0; i< 16; i++){							//styro if stepvalue > 15 -> Seq End
 		if (seqSteps->steps[i] > 15){
 			resetstep = i;
 			return;
@@ -151,12 +151,12 @@ void LfoStepSeq::nextValueInMatrix() {
 	int phaseInteger = phase;
 	phase -= phaseInteger;
 	float phaseDecimal = phase;
-	if (resetstep > 20){
+	if (resetstep > 20){								//styro if resetstep > 20  -> 16 step seq
 			phaseInteger &= 0xf; // modulo 16
 	}else{
 		if (resetstep < 1)
 			resetstep=1;
-		phaseInteger = phaseInteger % resetstep;
+		phaseInteger = phaseInteger % resetstep;		//styro if resetstep > 20  -> 16 step seq
 	}
 //	phaseInteger &= 0xf; // modulo 16
 	phase += phaseInteger;

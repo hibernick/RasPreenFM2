@@ -136,7 +136,13 @@ Other things i changed:
   Sound-DMA IRQ Rate of 333uS, with Filter LP it takes about 120uS)
 
 - the length of the Stepsequencers can be set from 2-16 steps (value 1 over F on the reset-step)
- 
+
+- new modmatrix sources 
+  p1u,p2u,p3u,p4u  -> unipolar performance control (0.0 - 1.0)
+  cnst  -> constant (1.0)
+
+- display is flipped 180° (for contrast reason of the used DFROBOT SKU_DFR0550 5" display (colors looks better upside down))
+
 
 known Bugz:
 - sometimes it ignores a note, no idea what it could be, will take probably long to figure out, till then
