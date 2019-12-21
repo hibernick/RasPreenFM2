@@ -138,7 +138,8 @@ enum {
     ROW_LFOSEQ2 ,
     ROW_MIDINOTE1CURVE,
     ROW_MIDINOTE2CURVE,
-    ROW_LFO_LAST = ROW_MIDINOTE2CURVE
+    ROW_LFO_LAST = ROW_MIDINOTE2CURVE,
+    ROW_VOLUMES = ROW_LFO_LAST+1                                // styro vol control row
 };
 
 
@@ -174,6 +175,7 @@ enum {
 };
 
 #define NUMBER_OF_ROWS ROW_LFO_LAST+1
+#define NUMBER_OF_ROWS_EXT ROW_VOLUMES+1                        // styro Volpage
 
 #define PATCH_SIZE_PFM2 ((NUMBER_OF_ROWS)*4*2 + 16*2 + 13)
 #define PFM1_PATCH_SIZE (128+64)

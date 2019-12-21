@@ -168,6 +168,8 @@ public:
     void showCycles();
 #endif
 
+    // float volumes[4] = {1.0f,1.0f,1.0f,1.0f};                                   // styro for volume control via midi & volumes-page
+
 
 private:
     // Called by setSynthState

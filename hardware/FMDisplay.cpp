@@ -348,7 +348,7 @@ void FMDisplay::updateEncoderValue(int row, int encoder, ParameterDisplay* param
         printFloatWithSpace(newFloatValue);
         break;
     case DISPLAY_TYPE_FLOAT:
-        if (unlikely(row == ROW_PERFORMANCE1) || (encoder <= 0)) {                  //styro
+        if (unlikely(row == ROW_PERFORMANCE1 || row == ROW_VOLUMES) || (encoder <= 0)) {                  // styro cursor x could be <0
             lcd->setCursor(encoder*5, 3);
         } else {
             lcd->setCursor(encoder*5 - 1, 3);
@@ -577,8 +577,18 @@ void FMDisplay::refreshAllScreenByStep() {
 
 void FMDisplay::updateEncoderValue(int refreshStatus) {
     int row = this->synthState->getCurrentRow();
+    float newValue;
     struct ParameterDisplay param = allParameterRows.row[row]->params[refreshStatus -1];
-    float newValue = ((float*)this->synthState->params)[row*NUMBER_OF_ENCODERS+refreshStatus -1];
+    if (likely(row != ROW_VOLUMES)){
+        newValue = ((float*)this->synthState->params)[row*NUMBER_OF_ENCODERS+refreshStatus -1];
+    }else{
+        if (refreshStatus > 0 && refreshStatus < 5){
+            newValue = psynth->getTimbre(refreshStatus-1)->volume;
+        }
+        
+//        synthState->params)[row*NUMBER_OF_ENCODERS+refreshStatus -1];
+
+    }
     updateEncoderValue(this->synthState->getCurrentRow(), refreshStatus -1, &param, newValue);
 }
 
@@ -646,21 +656,27 @@ void FMDisplay::newParamValueFromExternal(int timbre, int currentRow, int encode
     if (unlikely(screenSaverMode)) {
         return;
     }
-    checkPresetModified(timbre);
-    if (timbre == currentTimbre) {
-        if (this->synthState->getSynthMode() == SYNTH_MODE_EDIT && currentRow == this->displayedRow) {
-            if (unlikely((currentRow == ROW_LFOSEQ1 || currentRow == ROW_LFOSEQ2) && encoder>1)) {
-                updateStepSequencer(currentRow, encoder, oldValue, newValue);
-                return;
-            }
-            if (unlikely((currentRow == ROW_EFFECT || currentRow == ROW_ARPEGGIATOR1) && encoder == 0)) {
-                refreshStatus = 8;
-            } else {
-                if (shouldThisValueShowUp(currentRow, encoder)) {
-                    updateEncoderValue(currentRow, encoder, param, newValue);
+    if (likely(currentRow != ROW_VOLUMES)){
+        checkPresetModified(timbre);
+        if (timbre == currentTimbre) {
+            if (this->synthState->getSynthMode() == SYNTH_MODE_EDIT && currentRow == this->displayedRow) {
+                if (unlikely((currentRow == ROW_LFOSEQ1 || currentRow == ROW_LFOSEQ2) && encoder>1)) {
+                    updateStepSequencer(currentRow, encoder, oldValue, newValue);
+                    return;
+                }
+                if (unlikely((currentRow == ROW_EFFECT || currentRow == ROW_ARPEGGIATOR1) && encoder == 0)) {
+                    refreshStatus = 8;
+                } else {
+                    if (shouldThisValueShowUp(currentRow, encoder)) {
+                        updateEncoderValue(currentRow, encoder, param, newValue);
+                    }
                 }
             }
         }
+    }else{
+        if (this->synthState->getSynthMode() == SYNTH_MODE_EDIT && currentRow == this->displayedRow) {
+                    updateEncoderValue(currentRow, encoder, param, newValue);
+        }        
     }
 }
 
@@ -724,6 +740,18 @@ void FMDisplay::newParamValue(int timbre, int currentRow, int encoder, Parameter
     if (wakeUpFromScreenSaver()) {
         return;
     }
+
+    if (this->synthState->getSynthMode() == SYNTH_MODE_EDIT) {
+        if (unlikely(currentRow != this->displayedRow)) {
+            return;
+        }
+        if (unlikely(currentRow == ROW_VOLUMES)) {
+
+            updateEncoderValue(currentRow, encoder, param, newValue);
+            return;
+        }
+    }
+
     checkPresetModified(timbre);
 
     if (this->synthState->getSynthMode() == SYNTH_MODE_EDIT) {
@@ -1151,6 +1179,12 @@ void FMDisplay::noteOn(int timbre, bool show) {
     }
 }
 
+void FMDisplay::audioClipping(void){
+            lcd->setCursor(21, 0);
+            lcd->print('X');
+            clipCounter = 2;
+}
+
 void FMDisplay::tempoClick() {
     for (int timbre=0; timbre<4; timbre++) {
         if (noteOnCounter[timbre] >0) {
@@ -1166,6 +1200,13 @@ void FMDisplay::tempoClick() {
             algoCounterForIMInformation = false;
             // call new timbre to refresh the whole page
             newTimbre(this->currentTimbre);
+        }
+    }
+    if (clipCounter > 0) {
+        clipCounter --;
+        if (clipCounter == 0) {
+            lcd->setCursor(21, 0);
+            lcd->print(' ');
         }
     }
     // if (unlikely(synthState->fullState.midiConfigValue[MIDICONFIG_OLED_SAVER] > 0)) {            // styro

@@ -92,7 +92,7 @@ Hexter             hexter;
 
 static const char FromKernel[] = "kernel";
 
-const char* ProgVersion = "RasPreenFM2 0.04f 32@48k " __DATE__ " " __TIME__;
+const char* ProgVersion = "RasPreenFM2 0.04g 32@48k " __DATE__ " " __TIME__;
 const char* line2 = "By styro2000";
 const char* line3 = "Based on PreenFM2";
 const char* line4 = "By Xavier Hosxe";
@@ -207,6 +207,7 @@ boolean CKernel::Initialize (void)
 
     synth.setSynthState(&synthState);
     fmDisplay.setSynthState(&synthState);
+	fmDisplay.setSynth(&synth);
     midiDecoder.setSynthState(&synthState);
     midiDecoder.setVisualInfo(&fmDisplay);
     midiDecoder.setSynth(&synth);
@@ -394,6 +395,11 @@ TShutdownMode CKernel::Run (void)
 			synthState.tempoClick();
 			fmDisplay.tempoClick();
 			tempoTimer = newPreenTimer;
+		}
+
+		if (m_Soundmanager.m_clipping != 0){
+			fmDisplay.audioClipping();
+			m_Soundmanager.m_clipping=0;
 		}
 
 

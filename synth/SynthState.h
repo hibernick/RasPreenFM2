@@ -167,6 +167,12 @@ enum {
     ENCODER_NOTECURVE_AFTER
 };
 
+enum {
+    ENCODER_VOLUME_TIMBRE1 = 0,
+    ENCODER_VOLUME_TIMBRE2,
+    ENCODER_VOLUME_TIMBRE3,
+    ENCODER_VOLUME_TIMBRE4
+};
 
 
 typedef unsigned char uchar;
@@ -324,7 +330,7 @@ struct ParameterRowDisplay {
 
 
 struct AllParameterRowsDisplay {
-    struct ParameterRowDisplay* row[NUMBER_OF_ROWS];
+    struct ParameterRowDisplay* row[NUMBER_OF_ROWS_EXT];
 };
 
 
@@ -577,6 +583,8 @@ public:
     struct FullState fullState;
     char stepSelect[2];
     char patternSelect;
+
+    void encoderTurnedForVolume(int row, int encoder, int ticks);
 
 private:
     void copySynthParams(char* source, char* dest);

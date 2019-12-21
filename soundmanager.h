@@ -68,6 +68,7 @@ public:
 	// void NoteOff(u8 ucChannel, u8 ucKeyNumber, u8 ucVelocity);
 	unsigned GetChunk (u32 *pBuffer, unsigned nChunkSize);
 
+	int m_clipping=0;
 
 
 private:
@@ -101,6 +102,7 @@ private:
 	static float s_SineTable[];
 
 	float m_nEnvCount;
+
 
 
 

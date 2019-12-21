@@ -138,6 +138,10 @@ public:
         return  lfoUSed[lfo] > 0;
     }
 
+    float volume = 1.0f;                     // styro for volume control via midi & volumes-page
+
+
+
 private:
 
     // MiniPal Arpegiator
@@ -160,7 +164,6 @@ private:
     Voice *voices[MAX_NUMBER_OF_VOICES];
     bool holdPedal;
     int8_t lastPlayedNote;
-
 
     // 6 oscillators Max
     Osc osc1;

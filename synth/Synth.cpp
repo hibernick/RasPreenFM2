@@ -469,6 +469,9 @@ void Synth::newParamValue(int timbre, int currentRow, int encoder, ParameterDisp
     case ROW_MIDINOTE2CURVE:
         timbres[timbre].updateMidiNoteScale(1);
         break;
+    case ROW_VOLUMES:
+        timbres[encoder].volume = newValue;
+        break;
     }
 }
 
@@ -534,24 +537,28 @@ void Synth::loadPreenFMPatchFromMidi(int timbre, int bank, int bankLSB, int patc
 
 void Synth::setNewValueFromMidi(int timbre, int row, int encoder, float newValue) {
     struct ParameterDisplay* param = &(allParameterRows.row[row]->params[encoder]);
-    int index = row * NUMBER_OF_ENCODERS + encoder;
-    float oldValue = ((float*)this->timbres[timbre].getParamRaw())[index];
+    if (likely (row != ROW_VOLUMES)){
+        int index = row * NUMBER_OF_ENCODERS + encoder;
+        float oldValue = ((float*)this->timbres[timbre].getParamRaw())[index];
 
-    // 2.08e : FIX CRASH when sending to many number of voices from editor !!!!
-    if (unlikely(row == ROW_ENGINE)) {
-        if (unlikely(encoder == ENCODER_ENGINE_VOICE)) {
-            int maxNumberOfVoices = getNumberOfFreeVoicesForThisTimbre(timbre);
-            if (newValue > maxNumberOfVoices) {
-                newValue = maxNumberOfVoices;
+        // 2.08e : FIX CRASH when sending to many number of voices from editor !!!!
+        if (unlikely(row == ROW_ENGINE)) {
+            if (unlikely(encoder == ENCODER_ENGINE_VOICE)) {
+                int maxNumberOfVoices = getNumberOfFreeVoicesForThisTimbre(timbre);
+                if (newValue > maxNumberOfVoices) {
+                    newValue = maxNumberOfVoices;
+                }
             }
         }
-    }
-
-
-    this->timbres[timbre].setNewValue(index, param, newValue);
-    float newNewValue = ((float*)this->timbres[timbre].getParamRaw())[index];
-    if (oldValue != newNewValue) {
-        this->synthState->propagateNewParamValueFromExternal(timbre, row, encoder, param, oldValue, newNewValue);
+        this->timbres[timbre].setNewValue(index, param, newValue);
+        float newNewValue = ((float*)this->timbres[timbre].getParamRaw())[index];
+        if (oldValue != newNewValue) {
+            this->synthState->propagateNewParamValueFromExternal(timbre, row, encoder, param, oldValue, newNewValue);
+        }
+    }else{
+        
+        float oldValue = this->timbres[encoder].volume;
+        this->synthState->propagateNewParamValueFromExternal(timbre, row, encoder, param, oldValue, newValue);
     }
 }
 

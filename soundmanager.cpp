@@ -22,6 +22,7 @@
 #include <circle/logger.h>
 #include <assert.h>
 #include "global_obj.h"
+#include "FMDisplay.h"
 // #include "screenmanager.h"
 
 #define VOLUME_PERCENT 100
@@ -86,15 +87,19 @@ unsigned CSoundManager::GetChunk(u32 *pBuffer, unsigned nChunkSize)
 
 		if (m_left > (1 << 23)-1){						// clamp to prevent nasty wrap arounds
 			m_left = (1 << 23)-1;
+			m_clipping=1;
 		}
 		if (m_left < -(1 << 23)+1){
 			m_left = -(1 << 23)+1;
+			m_clipping=1;
 		}
 		if (m_right > (1 << 23)-1){
 			m_right = (1 << 23)-1;
+			m_clipping=1;
 		}
 		if (m_right < -(1 << 23)+1){
 			m_right = -(1 << 23)+1;
+			m_clipping=1;
 		}
 
 		*pBuffer++ = (u32)m_left;

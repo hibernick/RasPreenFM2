@@ -24,6 +24,7 @@
 #include "Menu.h"
 #include "VisualInfo.h"
 #include "Storage.h"
+#include "Synth.h"
 
 
 
@@ -48,6 +49,8 @@ public:
 	void midiClock(bool show);
 	void noteOn(int timbre, bool show);
 	void tempoClick();
+	void audioClipping(void);
+
 
 	static int getLength(const char *str) {
 		int length = 0;
@@ -150,6 +153,10 @@ public:
     	this->refreshStatus = refreshStatus;
     }
 
+    void setSynth(Synth *psynth) {
+    	this->psynth = psynth;
+    }
+
     bool wakeUpFromScreenSaver();
     void displayAlgo(int algo);
     void displayIMInformation(int algo);
@@ -159,6 +166,7 @@ private:
 	Storage* storage;
 	int refreshStatus;
 	int displayedRow;
+	Synth *psynth;
 
 	int menuRow;
 	// Local value preset modified to know whether it's currently showing up
@@ -170,6 +178,7 @@ private:
 	bool algoCounterForIMInformation;
 	unsigned screenSaveTimer;
 	bool screenSaverMode;
+	int clipCounter;
 };
 
 #endif /* FMDISPLAY_H_ */

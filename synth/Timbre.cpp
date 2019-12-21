@@ -603,8 +603,8 @@ case FILTER_OFF:
     	// Filter off has gain...
     	float *sp = this->sampleBlock;
     	for (int k=0 ; k < BLOCK_SIZE ; k++) {
-			*sp++ = (*sp) * mixerGain;
-			*sp++ = (*sp) * mixerGain;
+			*sp++ = (*sp) * mixerGain * volume;
+			*sp++ = (*sp) * mixerGain * volume;
 		}
     }
     break;
@@ -613,8 +613,8 @@ default:
     	// MixerGain...
     	float *sp = this->sampleBlock;
     	for (int k=0 ; k < BLOCK_SIZE ; k++) {
-			*sp++ = (*sp) * mixerGain;
-			*sp++ = (*sp) * mixerGain;
+			*sp++ = (*sp) * mixerGain * volume;
+			*sp++ = (*sp) * mixerGain * volume;
 		}
     }
     	// NO EFFECT

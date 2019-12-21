@@ -577,6 +577,12 @@ void MidiDecoder::controlChange(int timbre, MidiEvent& midiEvent) {
             this->synth->setNewValueFromMidi(timbre, ROW_ARPEGGIATOR2, ENCODER_ARPEGGIATOR_DURATION,
                     (float)midiEvent.value[1]);
             break;
+        case CC_VOLUME:
+            // cc.value[1] = newValue * 5.0f + 50.1f;
+            this->synth->setNewValueFromMidi(timbre, ROW_VOLUMES, timbre,
+                    (float)(midiEvent.value[1]) * INV127);
+            break;
+
 
         }
     }

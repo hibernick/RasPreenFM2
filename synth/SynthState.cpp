@@ -176,8 +176,8 @@ struct ParameterRowDisplay effectParameterRow = {
                 {0, FILTER_LAST - 1, FILTER_LAST, DISPLAY_TYPE_STRINGS, fxName, nullNamesOrder, nullNamesOrder },
                 {0, 1, 101, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder },
                 {0, 1, 101, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder },
-                {0, 2, 201, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder }
-//                {0, 4, 201, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder }             //  styro More Gain
+//                {0, 2, 201, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder }
+                {0, 3, 301, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder }             //  styro More Gain
         }
 };
 
@@ -383,6 +383,17 @@ struct ParameterRowDisplay performanceParameterRow = {
         }
 };
 
+struct ParameterRowDisplay volumesParameterRow = {                    // styro volume page
+        "      -Volumes-",
+        { " Vol1", " Vol2", " Vol3", " Vol4" },
+        {
+                { 0 , 1, 128, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder},
+                { 0 , 1, 128, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder},
+                { 0 , 1, 128, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder},
+                { 0 , 1, 128, DISPLAY_TYPE_FLOAT, nullNames, nullNamesOrder, nullNamesOrder}
+        }
+};
+
 struct ParameterRowDisplay lfoPhaseParameterRow = {
         "LFO Phase",
         { "Lfo1", "Lfo2", "Lfo3", "    " },
@@ -472,7 +483,8 @@ struct AllParameterRowsDisplay allParameterRows = {
                 &lfoStepParameterRow,
                 &lfoStepParameterRow,
                 &midiNote1ParameterRow,
-                &midiNote2ParameterRow
+                &midiNote2ParameterRow,
+                &volumesParameterRow                    // styro volume page
         }
 };
 
@@ -565,6 +577,8 @@ SynthState::SynthState() {
         }
     }
 }
+
+
 
 void SynthState::encoderTurnedForStepSequencer(int row, int encoder, int ticks) {
     int whichStepSeq = row - ROW_LFOSEQ1;
@@ -911,6 +925,24 @@ bool SynthState::newRandomizerValue(int encoder, int ticks) {
     return newValue != oldValue;
 }
 
+void SynthState::encoderTurnedForVolume(int row, int encoder, int ticks) {
+        struct ParameterDisplay* param = &(allParameterRows.row[currentRow]->params[encoder]);
+        float newValue;
+        float value = synth.getTimbre(encoder)->volume;
+        float oldValue = value;
+//        float inc = param->incValue;
+        float inc = param->maxValue / param->numberOfValues;
+        int tickIndex = (value - param->minValue) / inc + .0005f + ticks;
+        newValue = param->minValue + tickIndex * inc;
+        if (newValue > param->maxValue) {
+            newValue = param->maxValue;
+        }
+        if (newValue < param->minValue) {
+            newValue = param->minValue;
+        }
+        propagateNewParamValue(encoder, row, encoder, param, oldValue, newValue);
+//        synth.getTimbre(encoder)->volume = newValue;
+}
 
 void SynthState::encoderTurned(int encoder, int ticks) {
     if (fullState.synthMode == SYNTH_MODE_EDIT) {
@@ -926,6 +958,10 @@ void SynthState::encoderTurned(int encoder, int ticks) {
             encoderTurnedForArpPattern(currentRow, encoder, ticks);
             return;
         }
+        if (unlikely(currentRow == ROW_VOLUMES )) {                 // styro Volumes
+            encoderTurnedForVolume(currentRow, encoder, ticks);
+            return;
+        };
 
         int num = encoder + currentRow * NUMBER_OF_ENCODERS;
         struct ParameterDisplay* param = &(allParameterRows.row[currentRow]->params[encoder]);
@@ -1488,7 +1524,11 @@ void SynthState::buttonPressed(int button) {
             onUserChangedRow();
             break;
         case BUTTON_ENCODER:
-            currentRow = ROW_PERFORMANCE1;
+            if (currentRow != ROW_PERFORMANCE1){
+                currentRow = ROW_PERFORMANCE1;
+            }else{
+                currentRow = ROW_VOLUMES;                                // styro vol control row
+            }
             break;
         case BUTTON_MENUSELECT:
             fullState.synthMode = SYNTH_MODE_MENU;
@@ -1498,12 +1538,12 @@ void SynthState::buttonPressed(int button) {
             fullState.currentMenuItem = MenuItemUtil::getMenuItem(MAIN_MENU);
             break;
         case BUTTON_BACK:
-        {
-            // select next instrument as current one
-            setCurrentInstrument(0);
-        }
-        break;
-        }
+            {
+                // select next instrument as current one
+                setCurrentInstrument(0);
+            }
+            break;
+            }
     } else {
         // Any button when done is display makes the synth go back to edit mode.
         // MENU MODE

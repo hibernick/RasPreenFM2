@@ -143,6 +143,12 @@ Other things i changed:
 
 - display is flipped 180° (for contrast reason of the used DFROBOT SKU_DFR0550 5" display (colors looks better upside down))
 
+- clicking an encoderbutton in the performance-screen opens a volumes-screen to adjust the volumes of all 4 timbres
+
+- midi ctrl 7 adjusts the volume of the timbre
+
+- an 'X' is shown in the upper left corner when the audio is clipping
+
 
 known Bugz:
 - sometimes it ignores a note, no idea what it could be, will take probably long to figure out, till then
