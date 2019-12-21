@@ -175,9 +175,9 @@ void Osc::init(struct OscillatorParams *oscParams, DestinationEnum df) {
 
 void Osc::newNote(struct OscState* oscState, int note) {
 
-    oscState->index = waveTables[(int) oscillator->shape].max * .99f;           // Wavestart at 0° less click then 0.0       
+//    oscState->index = waveTables[(int) oscillator->shape].max * .982f;           // Wavestart at 0° less click then 0.0       
 //    oscState->index = waveTables[(int) oscillator->shape].max * .25f;         // Wavestart at 90°       
-//    oscState->index = 0.0f;                                                     // styro Wavestart at 0°
+    oscState->index = 0.0f;                                                     // styro Wavestart at 0°
     switch ((int)oscillator->frequencyType) {
     case OSC_FT_KEYBOARD:
         oscState->mainFrequency = frequencyToUse[note] * oscillator->frequencyMul * (1.0f + oscillator->detune * .05f);

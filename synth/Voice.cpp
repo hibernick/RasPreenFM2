@@ -657,7 +657,8 @@ void Voice::nextBlock() {
 	for (int k =0; k< BLOCK_SIZE*2; k++) {			// clear block
 		VoiceSampleBlock[k] =0.0;
 	}
-	float inv32 = .03125f;
+//	float inv32 = .03125f;							// Blocksize 16
+	float inv32 = .0625f;
 
 
 
@@ -696,7 +697,7 @@ void Voice::nextBlock() {
 
 		env1Value = this->env1ValueMem;
 		envNextValue = currentTimbre->env1.getNextAmpExp(&envState1);
-		env1Inc = (envNextValue - env1Value) * inv32;  // divide by 32
+		env1Inc = (envNextValue - env1Value) * inv32;  // styro divide by 32 now 16 
 		this->env1ValueMem = envNextValue;
 
 		env2Value = this->env2ValueMem;

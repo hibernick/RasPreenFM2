@@ -62,16 +62,29 @@ public:
 
         oscState->index +=  oscState->frequency * waveTable->precomputedValue + waveTable->floatToAdd;
 
+        // // convert to int;
+        // int indexInteger = oscState->index;
+        // // keep decimal part;
+        // oscState->index -= indexInteger;
+        // // Put it back inside the table
+        // indexInteger &= waveTable->max;
+        // // Readjust the floating pont inside the table
+        // oscState->index += indexInteger;
+
+        // return waveTable->table[indexInteger];
+
+        // styro change to HQ
         // convert to int;
         int indexInteger = oscState->index;
         // keep decimal part;
         oscState->index -= indexInteger;
+        float fp = oscState->index;
         // Put it back inside the table
         indexInteger &= waveTable->max;
         // Readjust the floating pont inside the table
         oscState->index += indexInteger;
 
-        return waveTable->table[indexInteger];
+        return waveTable->table[indexInteger]* (1-fp) + waveTable->table[indexInteger+1] * fp;
     }
 
     inline float getNextSampleHQ(struct OscState *oscState)  {
